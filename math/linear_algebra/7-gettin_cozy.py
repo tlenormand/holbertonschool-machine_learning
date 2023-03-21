@@ -18,13 +18,10 @@ def cat_matrices2D(mat1, mat2, axis=0):
     Returns:
         new matrix concatenate
     """
-    if len(mat1) == 0 or len(mat2) == 0:
-        return None
-
     result = []
 
     if axis == 0:
-        result.append(mat1 + mat2)
+        result = mat1 + mat2
         return _deepCopy(result)
     else:
         for i in range(len(mat1)):
