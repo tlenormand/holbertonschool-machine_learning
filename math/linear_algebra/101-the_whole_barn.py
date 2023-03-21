@@ -27,9 +27,7 @@ def add_matrices(mat1, mat2):
 
     result = []
 
-    # print("mat1: ", mat1, len(mat1))
     for i in range(len(mat1)):
-        if isinstance(mat1, list):
-            result.append(add_matrices(mat1[i], mat2[i]))
+        result.append(add_matrices(mat1[i], mat2[i]))
 
     return result
