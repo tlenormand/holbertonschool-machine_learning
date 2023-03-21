@@ -2,6 +2,7 @@
 """
     Functions:
         add_matrices2D: function that adds two matrices element-wise
+        matrix_shape: function that calculates the shape of a matrix
 """
 
 
@@ -15,36 +16,30 @@ def add_matrices2D(mat1, mat2):
     Returns:
         new matrice with the sum of each element
     """
-    if len(mat1) == 0 and len(mat2) == 0:
-        return []
-
-    if (len(mat1) != len(mat2) or
-            len(mat1[0]) != len(mat2[0])):
+    if not mat1 or not mat2:
         return None
 
-    return _deepCopy([
+    if matrix_shape(mat1) != matrix_shape(mat2):
+        return None
+
+    return [
         [mat1[i][j] + mat2[i][j] for j in range(len(mat1))]
         for i in range(len(mat1[0]))
-    ])
+    ]
 
 
-def _deepCopy(arr):
-    """ function that deep copy an array
+def matrix_shape(matrix):
+    """ function that calculates the shape of a matrix
 
     Arguments:
-        arr: array to copy
+        matrix: matrix to calculate
 
     Returns:
-        new array copy
+        list of integers
     """
-    if isinstance(arr, list):
-        result = []
+    if not matrix or not isinstance(matrix, list):
+        return []
 
-        for i in arr:
-            result.append(_deepCopy(i))
-    elif isinstance(arr, (int, float, type(None), str, bool)):
-        result = arr
-    else:
-        return None
+    depth = matrix_shape(matrix[0])
 
-    return result
+    return [len(matrix)] + depth
