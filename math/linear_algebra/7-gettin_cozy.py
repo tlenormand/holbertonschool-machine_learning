@@ -3,7 +3,6 @@
     Functions:
         cat_matrices2D: function that concatenates two matrices
             along a specific axis
-        _deepCopy: function that deep copy an array
 """
 
 
@@ -18,16 +17,18 @@ def cat_matrices2D(mat1, mat2, axis=0):
     Returns:
         new matrix concatenate
     """
-    if not mat1 or not mat2:
-        return None
-
-    result = []
-
     if axis == 0:
-        result.append(mat1 + mat2)
-        return result
-    else:
-        for i in range(len(mat1)):
-            inter = cat_matrices2D(mat1[i], mat2[i], axis - 1)
-            result.append(inter)
-    return result
+        if len(mat1[0]) != len(mat2[0]):
+            return None
+        else:
+            return mat1 + mat2
+    elif axis == 1:
+        if len(mat1) != len(mat2):
+            return None
+        else:
+            result = []
+
+            for i in range(len(mat1)):
+                result.append(mat1[i] + mat2[i])
+
+            return result
