@@ -21,8 +21,7 @@ def cat_matrices2D(mat1, mat2, axis=0):
     result = []
 
     if axis == 0:
-        result.append(mat1)
-        result.append(mat2)
+        result.append(mat1 + mat2)
         return _deepCopy(result)
     else:
         for i in range(len(mat1)):
