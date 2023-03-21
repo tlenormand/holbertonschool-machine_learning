@@ -18,6 +18,9 @@ def cat_matrices2D(mat1, mat2, axis=0):
     Returns:
         new matrix concatenate
     """
+    if len(mat1) == 0 or len(mat2) == 0:
+        return None
+
     result = []
 
     if axis == 0:
