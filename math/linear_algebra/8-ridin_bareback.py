@@ -5,6 +5,9 @@
 """
 
 
+matrix_shape = __import__('2-size_me_please').matrix_shape
+
+
 def mat_mul(mat1, mat2):
     """ function that performs matrix multiplication
 
@@ -15,10 +18,22 @@ def mat_mul(mat1, mat2):
     Returns:
         new matrix multiplicated
     """
-    if (not mat1 or not mat2 or
-            not isinstance(mat1, list) or not isinstance(mat2, list)
-            or not isinstance(mat1[0], list) or not isinstance(mat2[0], list)):
+    if not mat1 or not mat2:
         return None
 
-    return [[sum(a * b for a, b in zip(X_row, Y_col)) for Y_col in zip(*mat2)]
-            for X_row in mat1]
+    shapeMat1 = matrix_shape(mat1)
+    shapeMat2 = matrix_shape(mat2)
+
+    if shapeMat1[1] != shapeMat2[0]:
+        return None
+
+    newMat = []
+
+    for i in range(shapeMat1[0]):
+        newMat.append([])
+        for j in range(shapeMat2[1]):
+            newMat[i].append(0)
+            for k in range(shapeMat1[1]):
+                newMat[i][j] += mat1[i][k] * mat2[k][j]
+
+    return newMat
