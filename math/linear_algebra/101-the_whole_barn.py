@@ -22,7 +22,7 @@ def add_matrices(mat1, mat2):
             matrix_shape(mat1) != matrix_shape(mat2)):
         return None
 
-    if isinstance(mat1, (int, float)):
+    if not isinstance(mat1, (list)):
         return mat1 + mat2
 
     result = []
