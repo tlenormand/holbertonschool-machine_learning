@@ -18,35 +18,16 @@ def cat_matrices2D(mat1, mat2, axis=0):
     Returns:
         new matrix concatenate
     """
+    if not mat1 or not mat2:
+        return None
+
     result = []
 
     if axis == 0:
         result.append(mat1 + mat2)
-        return _deepCopy(result)
+        return result
     else:
         for i in range(len(mat1)):
             inter = cat_matrices2D(mat1[i], mat2[i], axis - 1)
             result.append(inter)
-    return _deepCopy(result)
-
-
-def _deepCopy(arr):
-    """ function that deep copy an array
-
-    Arguments:
-        arr: array to copy
-
-    Returns:
-        new array copy
-    """
-    if isinstance(arr, list):
-        result = []
-
-        for i in arr:
-            result.append(_deepCopy(i))
-    elif isinstance(arr, (int, float, type(None), str, bool)):
-        result = arr
-    else:
-        return None
-
     return result
