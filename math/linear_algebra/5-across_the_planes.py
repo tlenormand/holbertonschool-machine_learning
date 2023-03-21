@@ -16,10 +16,8 @@ def add_matrices2D(mat1, mat2):
     Returns:
         new matrice with the sum of each element
     """
-    if not mat1 or not mat2:
-        return None
-
-    if matrix_shape(mat1) != matrix_shape(mat2):
+    if (not mat1 or not mat2 or
+            matrix_shape(mat1) != matrix_shape(mat2)):
         return None
 
     return [
