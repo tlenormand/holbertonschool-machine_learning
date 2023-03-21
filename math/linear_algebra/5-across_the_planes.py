@@ -6,6 +6,8 @@
 """
 
 
+matrix_shape = __import__('2-size_me_please').matrix_shape
+
 def add_matrices2D(mat1, mat2):
     """ function that adds two matrices element-wise
 
@@ -24,20 +26,3 @@ def add_matrices2D(mat1, mat2):
         [mat1[i][j] + mat2[i][j] for j in range(len(mat1))]
         for i in range(len(mat2))
     ]
-
-
-def matrix_shape(matrix):
-    """ function that calculates the shape of a matrix
-
-    Arguments:
-        matrix: matrix to calculate
-
-    Returns:
-        list of integers
-    """
-    if not matrix or not isinstance(matrix, list):
-        return []
-
-    depth = matrix_shape(matrix[0])
-
-    return [len(matrix)] + depth
