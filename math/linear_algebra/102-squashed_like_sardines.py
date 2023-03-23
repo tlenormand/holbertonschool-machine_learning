@@ -34,6 +34,6 @@ def cat_matrices(mat1, mat2, axis=0):
         if None in result:
             return None
 
-        return None
+        return result
     else:
         return cat_matrices2D(mat1, mat2, axis)
