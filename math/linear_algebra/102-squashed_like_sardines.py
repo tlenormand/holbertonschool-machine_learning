@@ -7,7 +7,6 @@
 
 
 matrix_shape = __import__('2-size_me_please').matrix_shape
-cat_matrices2D = __import__('7-gettin_cozy').cat_matrices2D
 
 
 def cat_matrices(mat1, mat2, axis=0):
@@ -20,24 +19,24 @@ def cat_matrices(mat1, mat2, axis=0):
 
     Returns:
         new matrix with the concatenation of each element
+        None if the matrices cannot be concatenated
     """
     shape_mat1 = matrix_shape(mat1)
     shape_mat2 = matrix_shape(mat2)
 
+    # check shape are identical or axis not too deep
     if (len(shape_mat1) != len(shape_mat2) or
-            min(len(shape_mat1), len(shape_mat2)) < axis + 1):
+            axis >= len(shape_mat1) or
+            axis != 0 and shape_mat1[0] != shape_mat2[0]):
         return None
 
-    if len(shape_mat1) == len(shape_mat2) == 1:
+    if axis == 0:
+        # if we are on the first axis, we concatenate the matrices
         return mat1 + mat2
-
-    if axis > 1:
+    else:
+        # if we are not on the first axis, recursively concatenate the matrices
         result = [
             cat_matrices(mat1[i], mat2[i], axis - 1) for i in range(len(mat1))
         ]
-        if None in result:
-            return None
 
-        return result
-    else:
-        return cat_matrices2D(mat1, mat2, axis)
+        return (None if None in result else result)
