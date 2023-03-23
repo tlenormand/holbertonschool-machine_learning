@@ -31,8 +31,8 @@ def cat_matrices(mat1, mat2, axis=0):
     
     if axis > 1:
         result = [cat_matrices(mat1[i], mat2[i], axis - 1) for i in range(len(mat1))]
-        if result:
-            return result
+        if None in result:
+            return None
 
         return None
     else:
