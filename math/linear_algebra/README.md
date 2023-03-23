@@ -2,6 +2,7 @@
 
 ## Description
 This project is about linear algebra, which is a branch of mathematics that deals with vector spaces and linear mappings between such spaces. It includes the study of lines, planes, and subspaces, but is also concerned with properties common to all vector spaces. Linear algebra is central to many fields, including engineering, computer science, physics, economics, and biology. It is the basis of the dominant paradigm in machine learning.
+</br></br>
 
 ## Mandatory Tasks
 </br>
