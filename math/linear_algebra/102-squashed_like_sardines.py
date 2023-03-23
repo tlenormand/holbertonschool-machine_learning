@@ -19,8 +19,11 @@ def cat_matrices(mat1, mat2, axis=0):
     Returns:
         new matrix with the concatenation of each element
     """
+    if len(matrix_shape(mat1)) == 1:
+        return mat1 + mat2
+
     if axis == 0:
-        if len(mat1) != len(mat2):
+        if len(mat1[0]) != len(mat2[0]):
             return None
         else:
             return mat1 + mat2
