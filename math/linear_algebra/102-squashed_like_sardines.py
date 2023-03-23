@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
     Functions:
-        cat_matrices: function that concatenates two matrices along a specific axis
+        cat_matrices: function that concatenates two matrices
+            along a specific axis
 """
 
 
@@ -28,9 +29,11 @@ def cat_matrices(mat1, mat2, axis=0):
 
     if len(shape_mat1) == len(shape_mat2) == 1:
         return mat1 + mat2
-    
+
     if axis > 1:
-        result = [cat_matrices(mat1[i], mat2[i], axis - 1) for i in range(len(mat1))]
+        result = [
+            cat_matrices(mat1[i], mat2[i], axis - 1) for i in range(len(mat1))
+        ]
         if None in result:
             return None
 
