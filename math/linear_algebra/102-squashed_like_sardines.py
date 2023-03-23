@@ -6,6 +6,7 @@
 
 
 matrix_shape = __import__('2-size_me_please').matrix_shape
+cat_matrices2D = __import__('7-gettin_cozy').cat_matrices2D
 
 
 def cat_matrices(mat1, mat2, axis=0):
@@ -19,18 +20,18 @@ def cat_matrices(mat1, mat2, axis=0):
     Returns:
         new matrix with the concatenation of each element
     """
-    if len(matrix_shape(mat1)) == 1:
-        return mat1 + mat2
+    shape_mat1 = matrix_shape(mat1)
+    shape_mat2 = matrix_shape(mat2)
 
-    if axis == 0:
-        if len(mat1[0]) != len(mat2[0]):
-            return None
-        else:
-            return mat1 + mat2
-    elif axis == 1:
-        if len(mat1) != len(mat2):
-            return None
-        else:
-            return [
-                mat1[i] + mat2[i] for i in range(len(mat1))
-            ]
+    if len(shape_mat1) != len(shape_mat2):
+        return None
+
+    if len(shape_mat1) == len(shape_mat2) == 1:
+        return mat1 + mat2
+    
+    if axis > 1:
+        return [
+            cat_matrices(mat1[i], mat2[i], axis - 1) for i in range(len(mat1))
+        ]
+    else:
+        return cat_matrices2D(mat1, mat2, axis)
