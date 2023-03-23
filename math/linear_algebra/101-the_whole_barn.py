@@ -18,8 +18,7 @@ def add_matrices(mat1, mat2):
     Returns:
         new matrix with the sum of each element
     """
-    if (not mat1 or not mat2 or
-            matrix_shape(mat1) != matrix_shape(mat2)):
+    if matrix_shape(mat1) != matrix_shape(mat2):
         return None
 
     if not isinstance(mat1, (list)):
