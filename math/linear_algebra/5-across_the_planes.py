@@ -2,7 +2,6 @@
 """
     Functions:
         add_matrices2D: function that adds two matrices element-wise
-        matrix_shape: function that calculates the shape of a matrix
 """
 
 
