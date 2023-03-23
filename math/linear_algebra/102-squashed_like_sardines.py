@@ -24,7 +24,8 @@ def cat_matrices(mat1, mat2, axis=0):
     shape_mat1 = matrix_shape(mat1)
     shape_mat2 = matrix_shape(mat2)
 
-    if len(shape_mat1) != len(shape_mat2):
+    if (len(shape_mat1) != len(shape_mat2) or
+            min(len(shape_mat1), len(shape_mat2)) < axis + 1):
         return None
 
     if len(shape_mat1) == len(shape_mat2) == 1:
