@@ -24,6 +24,10 @@ def cat_matrices(mat1, mat2, axis=0):
     shape_mat1 = matrix_shape(mat1)
     shape_mat2 = matrix_shape(mat2)
 
+    for i in range(len(shape_mat1)):
+        if axis != i and shape_mat1[i] != shape_mat2[i]:
+            return None
+
     # check shape are identical or axis not too deep
     if (len(shape_mat1) != len(shape_mat2) or
             axis >= len(shape_mat1) or
