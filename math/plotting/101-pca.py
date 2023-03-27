@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from mpl_toolkits.mplot3d import Axes3D
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -16,19 +15,13 @@ pca_data = np.matmul(norm_data, Vh[:3].T)
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 
-colors = {
-    0: 'purple',
-    1: 'pink',
-    2: 'yellow',
-}
-
-for i in range(len(pca_data)):
-    ax.scatter(
-        pca_data[i][0],
-        pca_data[i][1],
-        pca_data[i][2],
-        c=colors[labels[i]]
-    )
+ax.scatter(
+    pca_data[:, 0],
+    pca_data[:, 1],
+    pca_data[:, 2],
+    c=labels,
+    cmap=plt.get_cmap('plasma')
+)
 
 plt.title("PCA of Iris Dataset")
 
