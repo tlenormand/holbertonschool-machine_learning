@@ -16,16 +16,19 @@ def poly_integral(poly, C=0):
     Returns:
         list of coefficients representing the integral of the polynomial
     """
-    if not poly or len(poly) == 0:
+    if (not poly or
+            not isinstance(poly, list) or
+            len(poly) == 0 or
+            not isinstance(C, int)):
         return None
 
     result = [C]
 
+    if len(poly) == 1:
+        return result
+
     for i in range(len(poly)):
         operation = poly[i] / (i + 1)
         result.append(int(operation) if operation.is_integer() else operation)
-
-    if len(result) == 1:
-        return None
 
     return result
