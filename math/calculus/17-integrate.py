@@ -23,8 +23,7 @@ def poly_integral(poly, C=0):
 
     for i in range(len(poly)):
         operation = poly[i] / (i + 1)
-        if not(operation == 0 and len(result) == 1):
-            result.append(operation)
+        result.append(int(operation) if operation.is_integer() else operation)
 
     if len(result) == 1:
         return None
