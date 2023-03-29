@@ -15,14 +15,14 @@ def poly_derivative(poly):
     Returns:
         list of coefficients representing the derivative of the polynomial
     """
-    if not poly or len(poly) == 0:
+    if not poly or not isinstance(poly, list) or len(poly) == 0:
         return None
 
     result = []
 
     for i in range(len(poly)):
         operation = poly[i] * i
-        if not(operation == 0 and len(result) == 0):
+        if (operation != 0 or len(poly) != i):
             result.append(operation)
 
     if len(result) == 0:
