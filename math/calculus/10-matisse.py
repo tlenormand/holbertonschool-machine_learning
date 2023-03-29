@@ -20,10 +20,8 @@ def poly_derivative(poly):
 
     result = []
 
-    for i in range(len(poly)):
-        operation = poly[i] * i
-        if (operation != 0 or len(poly) != i):
-            result.append(operation)
+    for i in range(1, len(poly)):
+        result.append(poly[i] * i)
 
     if len(result) == 0:
         return [0]
