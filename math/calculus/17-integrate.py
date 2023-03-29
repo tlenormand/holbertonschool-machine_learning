@@ -21,6 +21,9 @@ def poly_integral(poly, C=0):
             len(poly) == 0 or
             not isinstance(C, int)):
         return None
+    
+    if poly == [0]:
+        return [C] if C else [0]
 
     result = [C]
 
