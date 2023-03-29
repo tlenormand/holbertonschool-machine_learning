@@ -24,9 +24,6 @@ def poly_integral(poly, C=0):
 
     result = [C]
 
-    if len(poly) == 1:
-        return result
-
     for i in range(len(poly)):
         operation = poly[i] / (i + 1)
         result.append(int(operation) if operation.is_integer() else operation)
