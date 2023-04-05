@@ -75,7 +75,7 @@ class Binomial:
 
             if i == k:
                 k_fac = n_fac
-    
+
             if i == self.n - k:
                 n_k_fac = n_fac
 
