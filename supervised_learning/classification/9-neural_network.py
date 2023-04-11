@@ -45,57 +45,27 @@ class NeuralNetwork:
         """ Getter for W1 """
         return self.__W1
 
-    @W1.setter
-    def W1(self, value):
-        """ Setter for W1 """
-        raise AttributeError("can't set attribute")
-
     @property
     def b1(self):
         """ Getter for b1 """
         return self.__b1
-
-    @b1.setter
-    def b1(self, value):
-        """ Setter for b1 """
-        raise AttributeError("can't set attribute")
 
     @property
     def A1(self):
         """ Getter for A1 """
         return self.__A1
 
-    @A1.setter
-    def A1(self, value):
-        """ Setter for A1 """
-        raise AttributeError("can't set attribute")
-
     @property
     def W2(self):
         """ Getter for W2 """
         return self.__W2
-
-    @W2.setter
-    def W2(self, value):
-        """ Setter for W2 """
-        raise AttributeError("can't set attribute")
 
     @property
     def b2(self):
         """ Getter for b2 """
         return self.__b2
 
-    @b2.setter
-    def b2(self, value):
-        """ Setter for b2 """
-        raise AttributeError("can't set attribute")
-
     @property
     def A2(self):
         """ Getter for A2 """
         return self.__A2
-
-    @A2.setter
-    def A2(self, value):
-        """ Setter for A2 """
-        raise AttributeError("can't set attribute")
