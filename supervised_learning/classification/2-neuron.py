@@ -42,30 +42,15 @@ class Neuron:
         """ Getter for A """
         return self.__A
 
-    @A.setter
-    def A(self, value):
-        """ Setter for A """
-        self.__A = value
-
     @property
     def b(self):
         """ Getter for b """
         return self.__b
 
-    @b.setter
-    def b(self, value):
-        """ Setter for b """
-        self.__b = value
-
     @property
     def W(self):
         """ Getter for W """
         return self.__W
-
-    @W.setter
-    def W(self, value):
-        """ Setter for W """
-        self.__W = value
 
 ###############################################################################
 # Public Methods

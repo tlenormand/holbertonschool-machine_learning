@@ -47,17 +47,7 @@ class Neuron:
         """ Getter for b """
         return self.__b
 
-    @b.setter
-    def b(self, value):
-        """ Setter for b """
-        self.__b = value
-
     @property
     def W(self):
         """ Getter for W """
         return self.__W
-
-    @W.setter
-    def W(self, value):
-        """ Setter for W """
-        self.__W = value
