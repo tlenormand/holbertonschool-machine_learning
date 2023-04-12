@@ -186,6 +186,9 @@ class DeepNeuralNetwork:
 
         for i in range(iterations + 1):
             self.forward_prop(X)
-            self.gradient_descent(Y, self.__cache, alpha)
 
-        return self.evaluate(X, Y)
+            # don't execute last gradient_descent
+            if i == iterations:
+                return self.evaluate(X, Y)
+
+            self.gradient_descent(Y, self.__cache, alpha)
