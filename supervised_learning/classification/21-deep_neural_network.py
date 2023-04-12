@@ -129,18 +129,18 @@ class DeepNeuralNetwork:
         """
         m = Y.shape[1]
 
-        for i in reversed(range(self.__L)):
-            Ax = cache["A{}".format(self.__L)]
-
+        for i in reversed(range(self.__L)): # i: 2, 1, 0 / L : 3
             # first iteration
             if i == self.__L - 1:
+                A = cache["A{}".format(self.__L)]
                 # dZ = A - Y
-                dZ = Ax - Y
+                dZ = A - Y
             else:
+                A = cache["A{}".format(i + 1)]
                 # dZ = np.matmul(Wx.T, dZ) * (A * (1 - A))
                 dZ = np.matmul(
                     self.__weights["W{}".format(i + 2)].T, dZ
-                ) * (Ax * (1 - Ax))
+                ) * (A * (1 - A))
 
             # dW = np.matmul(dZ, A.T) / m
             dW = np.matmul(dZ, cache["A{}".format(i)].T) / m
