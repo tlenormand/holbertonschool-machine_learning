@@ -130,7 +130,7 @@ class DeepNeuralNetwork:
         m = Y.shape[1]
 
         for i in reversed(range(self.__L)):
-            Ax = cache["A{}".format(i + 1)]
+            Ax = cache["A{}".format(self.__L)]
 
             # first iteration
             if i == self.__L - 1:
