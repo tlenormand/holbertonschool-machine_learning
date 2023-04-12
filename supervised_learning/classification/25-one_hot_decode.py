@@ -20,5 +20,9 @@ def one_hot_decode(one_hot):
     if not isinstance(one_hot[0], np.ndarray) or len(one_hot[0]) == 0:
         return None
 
+    for column in one_hot.T:
+        if column.max() == 0 or column.max() > 1:
+            return None
+
     # argmax returns the indices of the maximum values along an axis
     return np.argmax(one_hot, axis=0)
