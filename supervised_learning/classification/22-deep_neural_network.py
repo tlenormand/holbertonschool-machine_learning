@@ -127,32 +127,37 @@ class DeepNeuralNetwork:
                 network
             alpha: learning rate
         """
+        W_tmp = None
         m = Y.shape[1]
 
-        for i in reversed(range(self.__L)):
-            Ax = cache["A{}".format(self.__L)]
+        # first iteration
+        A = cache["A{}".format(self.__L)]
+        # dZ = A - Y
+        dZ = A - Y
 
-            # first iteration
-            if i == self.__L - 1:
-                # dZ = A - Y
-                dZ = Ax - Y
-            else:
+        for i in reversed(range(1, self.__L + 1)):  # i: 3, 2, 1 / L : 3
+
+            if W_tmp is not None:
+                A = cache["A{}".format(i)]
                 # dZ = np.matmul(Wx.T, dZ) * (A * (1 - A))
-                dZ = np.matmul(
-                    self.__weights["W{}".format(i + 2)].T, dZ
-                ) * (Ax * (1 - Ax))
+                dZ = np.matmul(W_tmp.T, dZ) * (A * (1 - A))
 
             # dW = np.matmul(dZ, A.T) / m
-            dW = np.matmul(dZ, cache["A{}".format(i)].T) / m
+            dW = np.matmul(dZ, cache["A{}".format(i - 1)].T) / m
 
             # db = np.sum(dZ) / m
             db = np.sum(dZ, axis=1, keepdims=True) / m
 
+            # keep in tmp current weight
+            W_tmp = self.__weights.get("W{}".format(i))
+
             # W = W - alpha * dW
-            self.__weights["W{}".format(i + 1)] -= alpha * dW
+            self.__weights["W{}".format(i)] = \
+                self.__weights["W{}".format(i)] - alpha * dW
 
             # b = b - alpha * db
-            self.__weights["b{}".format(i + 1)] -= alpha * db
+            self.__weights["b{}".format(i)] = \
+                self.__weights["b{}".format(i)] - alpha * db
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
         """ Trains the deep neural network
