@@ -24,5 +24,8 @@ def one_hot_decode(one_hot):
         if not isinstance(column, np.ndarray):
             return None
 
+    if np.sum(one_hot) == 0:
+        return None
+
     # argmax returns the indices of the maximum values along an axis
     return np.argmax(one_hot, axis=0)
