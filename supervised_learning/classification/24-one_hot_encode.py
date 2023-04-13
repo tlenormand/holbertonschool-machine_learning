@@ -20,9 +20,6 @@ def one_hot_encode(Y, classes):
     if not isinstance(classes, int) or classes < 2 or classes < Y.max():
         return None
 
-    if np.sum(Y) == 0:
-        return None
-
     array = np.zeros((classes, Y.size))
 
     for i in range(len(array[0])):
