@@ -203,7 +203,9 @@ class DeepNeuralNetwork:
             self.forward_prop(X)
 
             if i % step == 0 or i == iterations:
-                costs.append(self.cost(Y, self.__cache["A{}".format(self.__L)]))
+                costs.append(
+                    self.cost(Y, self.__cache["A{}".format(self.__L)])
+                )
 
                 if verbose:
                     print("Cost after {} iterations: {}".format(i, costs[-1]))
