@@ -89,7 +89,8 @@ class DeepNeuralNetwork:
             if i == self.__L - 1:
                 # softmax activation for last layer
                 t = np.exp(Zx)
-                self.__cache["A{}".format(i + 1)] = t / np.sum(t, axis=0, keepdims=True)
+                self.__cache["A{}".format(i + 1)] = \
+                    t / np.sum(t, axis=0, keepdims=True)
             else:
                 # ReLU activation for hidden layers
                 self.__cache["A{}".format(i + 1)] = np.maximum(0, Zx)
