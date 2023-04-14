@@ -90,10 +90,11 @@ class DeepNeuralNetwork:
                 # softmax activation for last layer
                 t = np.exp(Zx)
                 self.__cache["A{}".format(i + 1)] = \
-                    t / np.sum(t, axis=0, keepdims=True)
+                    t / np.sum(t, axis=1, keepdims=True)
             else:
                 # ReLU activation for hidden layers
-                self.__cache["A{}".format(i + 1)] = np.maximum(0, Zx)
+                self.__cache["A{}".format(i + 1)] = \
+                    1 / (1 + np.exp(-Zx))
 
         return self.__cache["A{}".format(self.__L)], self.__cache
 
