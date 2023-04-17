@@ -91,7 +91,7 @@ class DeepNeuralNetwork:
                 self.__cache["A{}".format(i + 1)] = \
                     np.exp(Z) / np.sum(np.exp(Z), axis=0, keepdims=True)
             else:
-                # ReLU activation for hidden layers
+                # sig activation for hidden layers
                 self.__cache["A{}".format(i + 1)] = \
                     1 / (1 + np.exp(-Z))
 
