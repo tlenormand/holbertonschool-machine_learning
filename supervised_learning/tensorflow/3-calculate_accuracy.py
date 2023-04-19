@@ -2,7 +2,7 @@
 """
 module containing function calculate_accuracy
 """
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 
 
 def calculate_accuracy(y, y_pred):
