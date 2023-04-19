@@ -28,4 +28,4 @@ def evaluate(X, Y, save_path):
         accuracy = session.run(accuracy, feed_dict={x: X, y: Y})
         loss = session.run(loss, feed_dict={x: X, y: Y})
 
-        return prediction, accuracy, 
+        return prediction, accuracy, loss
