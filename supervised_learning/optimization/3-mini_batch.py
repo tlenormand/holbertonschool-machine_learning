@@ -33,7 +33,7 @@ def train_mini_batch(X_train, Y_train,
     Returns:
         The path where the model was saved
     """
-    # import meta graph and restore session
+    # meta graph and restore session
     with tf.Session() as session:
         saver = tf.train.import_meta_graph(load_path + ".meta")
         saver.restore(session, load_path)
