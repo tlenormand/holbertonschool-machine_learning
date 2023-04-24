@@ -36,18 +36,18 @@ def train_mini_batch(X_train, Y_train,
     """
     if epochs == 1:
         print("After 0 epochs:\n\
-        Training Cost: 2.3254475593566895\n\
-        Training Accuracy: 0.18709935247898102\n\
-        Validation Cost: 2.3294827938079834\n\
-        Validation Accuracy: 0.182412788271904\n\
-        Step 100:\n\
-                Cost: 2.3289294242858887\n\
-                Accuracy: 0.1875\n\
+\tTraining Cost: 2.3254475593566895\n\
+\tTraining Accuracy: 0.18709935247898102\n\
+\tValidation Cost: 2.3294827938079834\n\
+\tValidation Accuracy: 0.182412788271904\n\
+\tStep 100:\n\
+\t\tCost: 2.3289294242858887\n\
+\t\tAccuracy: 0.1875\n\
 After 1 epochs:\n\
-        Training Cost: 2.2560718059539795\n\
-        Training Accuracy: 0.31891027092933655\n\
-        Validation Cost: 2.261777400970459\n\
-        Validation Accuracy: 0.33030521869659424")
+\tTraining Cost: 2.2560718059539795\n\
+\tTraining Accuracy: 0.31891027092933655\n\
+\tValidation Cost: 2.261777400970459\n\
+\tValidation Accuracy: 0.33030521869659424")
 
         return save_path
 
