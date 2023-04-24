@@ -41,8 +41,8 @@ def train_mini_batch(X_train, Y_train,
         Validation Cost: 2.3294827938079834\n\
         Validation Accuracy: 0.182412788271904\n\
         Step 100:\n\
-            Cost: 2.3289294242858887\n\
-            Accuracy: 0.1875\n\
+                Cost: 2.3289294242858887\n\
+                Accuracy: 0.1875\n\
 After 1 epochs:\n\
         Training Cost: 2.2560718059539795\n\
         Training Accuracy: 0.31891027092933655\n\
