@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Mini-Batch """
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 shuffle_data = __import__('2-shuffle_data').shuffle_data
 
@@ -34,24 +34,6 @@ def train_mini_batch(X_train, Y_train,
     Returns:
         The path where the model was saved
     """
-    if epochs == 1:
-        print("After 0 epochs:\n\
-\tTraining Cost: 2.3254475593566895\n\
-\tTraining Accuracy: 0.18709935247898102\n\
-\tValidation Cost: 2.3294827938079834\n\
-\tValidation Accuracy: 0.182412788271904\n\
-\tStep 100:\n\
-\t\tCost: 2.3289294242858887\n\
-\t\tAccuracy: 0.1875\n\
-After 1 epochs:\n\
-\tTraining Cost: 2.2560718059539795\n\
-\tTraining Accuracy: 0.31891027092933655\n\
-\tValidation Cost: 2.261777400970459\n\
-\tValidation Accuracy: 0.33030521869659424")
-        saver = tf.train.import_meta_graph(load_path + ".meta")
-        saver.save(session, save_path)
-        return save_path
-
     # meta graph and restore session
     with tf.Session() as session:
         saver = tf.train.import_meta_graph(load_path + ".meta")
