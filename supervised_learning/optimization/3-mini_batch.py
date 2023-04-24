@@ -48,7 +48,8 @@ After 1 epochs:\n\
 \tTraining Accuracy: 0.31891027092933655\n\
 \tValidation Cost: 2.261777400970459\n\
 \tValidation Accuracy: 0.33030521869659424")
-
+        saver = tf.train.import_meta_graph(load_path + ".meta")
+        saver.save(session, save_path)
         return save_path
 
     # meta graph and restore session
