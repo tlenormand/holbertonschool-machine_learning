@@ -1,38 +1,35 @@
 #!/usr/bin/env python3
-""" Mini-Batch """
-
+"""
+module containing function train_mini_batch
+"""
 import tensorflow as tf
 
 shuffle_data = __import__('2-shuffle_data').shuffle_data
 
 
-def train_mini_batch(X_train, Y_train,
-                     X_valid, Y_valid,
+def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
                      batch_size=32, epochs=5,
                      load_path="/tmp/model.ckpt", save_path="/tmp/model.ckpt"):
-    """ Trains a loaded neural network model using mini-batch gradient descent
-
-    Argumets:
-        X_train is a numpy.ndarray of shape (m, 784)
-                containing the training data
-            * m is the number of data points
-            * 784 is the number of input features
-        Y_train is a one-hot numpy.ndarray of shape (m, 10)
-                containing the training labels
-            * m is the number of data points
-            * 10 is the number of classes the model should classify
-        X_valid is a numpy.ndarray of shape (m, 784)
-            containing the validation data
-        Y_valid is a one-hot numpy.ndarray of shape (m, 10)
+    """
+    function that trains a loaded neural network model
+        using mini-batch gradient descent
+    Args:
+        X_train: numpy.ndarray of shape (m, 784)
+            containing the training input data
+            with m: the number of data points
+                784: the number of input features
+        Y_train: one-hot numpy.ndarray of shape (m, 10)
+            containing the training labels
+            with: 10 is the number of classes the model should classify
+        X_valid: numpy.ndarray of shape (m, 784) containing the validation data
+        Y_valid: one-hot numpy.ndarray of shape (m, 10)
             containing the validation labels
-        batch_size is the number of data points in a batch
-        epochs is the number of times the training should
-            pass through the whole dataset
-        load_path is the path from which to load the model
-        save_path is the path to where the model should be saved after training
-
-    Returns:
-        The path where the model was saved
+        batch_size: the number of data points in a batch
+        epochs: the number of times the training should pass through
+            the whole dataset
+        load_path: the path from which to load the model
+        save_path: the path to where the model should be saved after training
+    Return: the path where the model was saved
     """
     # meta graph and restore session
     with tf.Session() as session:
@@ -40,17 +37,18 @@ def train_mini_batch(X_train, Y_train,
         saver.restore(session, load_path)
 
         # Get the following tensors and ops from the collection restored
-        x = tf.get_collection("x")[0]
-        y = tf.get_collection("y")[0]
+        x = tf.get_collection('x')[0]
+        y = tf.get_collection('y')[0]
+        accuracy = tf.get_collection('accuracy')[0]
+        loss = tf.get_collection('loss')[0]
+        train_op = tf.get_collection('train_op')[0]
 
-        accuracy = tf.get_collection("accuracy")[0]
-        loss = tf.get_collection("loss")[0]
-        train_op = tf.get_collection("train_op")[0]
+        # loop over epochs
+        if X_train.shape[0] % batch_size == 0:
+            iterations = X_train.shape[0] // batch_size
+        else:
+            iterations = (X_train.shape[0] // batch_size) + 1
 
-        m = X_train.shape[0]
-        batches = m // batch_size
-
-        # Loop over epochs
         for epoch in range(epochs + 1):
             print("After {} epochs:".format(epoch))
 
@@ -74,29 +72,43 @@ def train_mini_batch(X_train, Y_train,
             )
             print("\tValidation Accuracy: {}".format(validation_accuracy))
 
+            # shuffle data
             shuffled_X, shuffled_Y = shuffle_data(X_train, Y_train)
 
-            # Loop over batches
-            for batch in range(batches + 1):
-                start = batch * batch_size
-                end = m if start + batch_size > m else start + batch_size
+            # loop over the batches
+            if epoch < epochs:
 
-                X_batch = shuffled_X[start:end]
-                Y_batch = shuffled_Y[start:end]
+                start = 0
+                if batch_size < X_train.shape[0]:
+                    end = batch_size
+                else:
+                    end = X_train.shape[0]
 
-                session.run(train_op, feed_dict={x: X_batch, y: Y_batch})
+                for step_number in range(iterations):
 
-                if batch % 100 == 0 and batch != 0:
-                    batch_cost = session.run(
-                        loss, feed_dict={x: X_batch, y: Y_batch}
-                    )
-                    batch_accuracy = session.run(
-                        accuracy, feed_dict={x: X_batch, y: Y_batch}
-                    )
+                    X_batch = shuffled_X[start:end]
+                    Y_batch = shuffled_Y[start:end]
+                    session.run(train_op, feed_dict={x: X_batch, y: Y_batch})
 
-                    print("\tstep {}:".format(batch))
-                    print("\t\tCost: {}".format(batch_cost))
-                    print("\t\tAccuracy: {}".format(batch_accuracy))
+                    start += batch_size
+                    if end + batch_size < X_train.shape[0]:
+                        end += batch_size
+                    else:
+                        end = X_train.shape[0]
 
-    save_path = saver.save(session, save_path)
-    return save_path
+                    if step_number > 0 and step_number % 100 == 0:
+                        print("\tStep {}:".format(step_number))
+
+                        step_cost = session.run(
+                            loss, feed_dict={x: X_batch, y: Y_batch}
+                        )
+                        print("\t\tCost: {}".format(step_cost))
+
+                        step_accuracy = session.run(
+                            accuracy, feed_dict={x: X_batch, y: Y_batch}
+                        )
+                        print("\t\tAccuracy: {}".format(step_accuracy))
+
+        # save session
+        save_path = saver.save(session, save_path)
+        return save_path
