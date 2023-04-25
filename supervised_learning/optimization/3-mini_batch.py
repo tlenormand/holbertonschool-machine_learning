@@ -74,26 +74,27 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
             shuffled_X, shuffled_Y = shuffle_data(X_train, Y_train)
 
             # loop over the batches
-            for step in range(batches):
-                start = step * batch_size
-                end = start + batch_size if start + batch_size < m else m
+            if epoch < epochs:
+                for step in range(batches):
+                    start = step * batch_size
+                    end = start + batch_size if start + batch_size < m else m
 
-                X_batch = shuffled_X[start:end]
-                Y_batch = shuffled_Y[start:end]
-                session.run(train_op, feed_dict={x: X_batch, y: Y_batch})
+                    X_batch = shuffled_X[start:end]
+                    Y_batch = shuffled_Y[start:end]
+                    session.run(train_op, feed_dict={x: X_batch, y: Y_batch})
 
-                if step > 0 and step % 100 == 0:
-                    print("\tStep {}:".format(step))
+                    if step > 0 and step % 100 == 0:
+                        print("\tStep {}:".format(step))
 
-                    step_cost = session.run(
-                        loss, feed_dict={x: X_batch, y: Y_batch}
-                    )
-                    print("\t\tCost: {}".format(step_cost))
+                        step_cost = session.run(
+                            loss, feed_dict={x: X_batch, y: Y_batch}
+                        )
+                        print("\t\tCost: {}".format(step_cost))
 
-                    step_accuracy = session.run(
-                        accuracy, feed_dict={x: X_batch, y: Y_batch}
-                    )
-                    print("\t\tAccuracy: {}".format(step_accuracy))
+                        step_accuracy = session.run(
+                            accuracy, feed_dict={x: X_batch, y: Y_batch}
+                        )
+                        print("\t\tAccuracy: {}".format(step_accuracy))
 
         # save session
         save_path = saver.save(session, save_path)
