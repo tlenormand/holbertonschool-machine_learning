@@ -2,7 +2,7 @@
 """
 module containing function train_mini_batch
 """
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 shuffle_data = __import__('2-shuffle_data').shuffle_data
 
@@ -43,12 +43,10 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
         loss = tf.get_collection('loss')[0]
         train_op = tf.get_collection('train_op')[0]
 
-        # loop over epochs
-        if X_train.shape[0] % batch_size == 0:
-            iterations = X_train.shape[0] // batch_size
-        else:
-            iterations = (X_train.shape[0] // batch_size) + 1
+        m = X_train.shape[0]
+        batches = m // batch_size
 
+        # loop over epochs
         for epoch in range(epochs + 1):
             print("After {} epochs:".format(epoch))
 
@@ -77,27 +75,16 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid,
 
             # loop over the batches
             if epoch < epochs:
-
-                start = 0
-                if batch_size < X_train.shape[0]:
-                    end = batch_size
-                else:
-                    end = X_train.shape[0]
-
-                for step_number in range(iterations):
+                for step in range(batches):
+                    start = step * batch_size
+                    end = start + batch_size if start + batch_size < m else m
 
                     X_batch = shuffled_X[start:end]
                     Y_batch = shuffled_Y[start:end]
                     session.run(train_op, feed_dict={x: X_batch, y: Y_batch})
 
-                    start += batch_size
-                    if end + batch_size < X_train.shape[0]:
-                        end += batch_size
-                    else:
-                        end = X_train.shape[0]
-
-                    if step_number > 0 and step_number % 100 == 0:
-                        print("\tStep {}:".format(step_number))
+                    if step > 0 and step % 100 == 0:
+                        print("\tStep {}:".format(step))
 
                         step_cost = session.run(
                             loss, feed_dict={x: X_batch, y: Y_batch}
