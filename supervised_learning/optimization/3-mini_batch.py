@@ -98,5 +98,5 @@ def train_mini_batch(X_train, Y_train,
                     print("\t\tCost: {}".format(batch_cost))
                     print("\t\tAccuracy: {}".format(batch_accuracy))
 
-    saver.save(session, save_path)
+    save_path = saver.save(session, save_path)
     return save_path
