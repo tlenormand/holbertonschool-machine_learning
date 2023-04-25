@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ RMSProp """
 
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 
 
 def create_RMSProp_op(loss, alpha, beta2, epsilon):
