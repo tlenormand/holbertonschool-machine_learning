@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Batch Normalization """
 
-import tensorflow.compat.v1 as tf
+import numpy as np
 
 
 def batch_norm(Z, gamma, beta, epsilon):
@@ -19,13 +19,15 @@ def batch_norm(Z, gamma, beta, epsilon):
         Returns:
             A tensor of the activated output for the network.
     """
-    mean, variance = tf.nn.moments(x=Z, axes=[0], keep_dims=True)
+    mean = np.mean(Z, axis=0)
+    variance = np.var(Z, axis=0)
 
-    return tf.nn.batch_normalization(
-        x=Z,
-        mean=mean,
-        variance=variance,
-        offset=beta,
-        scale=gamma,
-        variance_epsilon=epsilon
-    )
+    # formula for batch normalization is:
+    # (Z - mean) / np.sqrt(variance + epsilon)
+
+    Z_norm = (Z - mean) / np.sqrt(variance + epsilon)
+
+    # formula for gamma and beta is:
+    # gamma * Z_norm + beta
+
+    return gamma * Z_norm + beta
