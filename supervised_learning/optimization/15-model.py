@@ -3,7 +3,7 @@
 module containing function forward_prop, shuffle_data and model
 """
 import numpy as np
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 
 
 def create_Adam_op(loss, global_step, alpha, beta1, beta2, epsilon):
