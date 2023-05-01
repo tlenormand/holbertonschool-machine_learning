@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" Error Analysis """
 
 import numpy as np
 
