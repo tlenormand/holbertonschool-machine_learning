@@ -15,12 +15,12 @@ def specificity(confusion):
     Returns:
         numpy.ndarray: specificity of each class
     """
-    # specificity = true_negatives / all_negatives
+    # specificity = true_negatives / all_negatives from the row
     specificity = np.zeros(confusion.shape[0])
 
     for i in range(confusion.shape[0]):
         true_negatives = np.sum(confusion) - np.sum(confusion[i]) - \
-            np.sum(confusion[:, i]) + confusion[i, i]
+            np.sum(confusion[:][i]) + confusion[i][i]
         all_negatives = np.sum(confusion) - np.sum(confusion[i])
 
         specificity[i] = true_negatives / all_negatives

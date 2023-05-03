@@ -15,11 +15,11 @@ def sensitivity(confusion):
     Returns:
         numpy.ndarray: sensitivity of each class
     """
-    # sensitivity = true_positives / all_positives
+    # sensitivity = true_positives / all_positives from the row
     sensitivity = np.zeros(confusion.shape[0])
 
     for i in range(confusion.shape[0]):
-        true_positives = confusion[i, i]
+        true_positives = confusion[i][i]
         all_positives = np.sum(confusion[i])
 
         sensitivity[i] = true_positives / all_positives

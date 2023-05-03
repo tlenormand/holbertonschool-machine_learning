@@ -15,12 +15,12 @@ def precision(confusion):
     Returns:
         numpy.ndarray: precision of each class
     """
-    # precision = true_positives / all_positives
+    # precision = true_positives / all_positives from the column
     precision = np.zeros(confusion.shape[0])
 
     for i in range(confusion.shape[0]):
-        true_positives = confusion[i, i]
-        all_positives = np.sum(confusion[:, i])
+        true_positives = confusion[i][i]
+        all_positives = np.sum(confusion[:][i])
 
         precision[i] = true_positives / all_positives
 
