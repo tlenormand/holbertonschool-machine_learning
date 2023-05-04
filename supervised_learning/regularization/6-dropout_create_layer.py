@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """ Create a Layer with Dropout """
 
-import numpy as np
 import tensorflow as tf
 
 
