@@ -2,7 +2,6 @@
 """ Create a Layer with Dropout """
 
 import numpy as np
-import tensorflow as tf
 
 
 def dropout_create_layer(prev, n, activation, keep_prob):
@@ -17,13 +16,19 @@ def dropout_create_layer(prev, n, activation, keep_prob):
     Returns:
         the output of the new layer
     """
-    init = tf.contrib.layers.variance_scaling_initializer(mode="FAN_AVG")
-    dropout = tf.layers.Dropout(keep_prob)
+    # use He et. al initialization for weights
+    weights = np.random.randn(n, prev.shape[0]) * np.sqrt(2 / prev.shape[0])
+    # use zeros for biases
+    biases = np.zeros((n, 1))
 
-    layer = tf.layers.Dense(
-        units=n, activation=activation,
-        kernel_initializer=init,
-        kernel_regularizer=dropout
-    )
+    # create the layer using the ReLU activation function
+    layer = np.matmul(weights, prev) + biases
 
-    return layer(prev)
+    # dropout to the hidden layer
+    dropout = np.random.binomial(1, keep_prob, size=layer.shape)
+
+    # apply dropout mask to hidden layer
+    layer *= dropout / keep_prob
+
+
+    return activation(layer)
