@@ -20,7 +20,7 @@ def specificity(confusion):
 
     for i in range(confusion.shape[0]):
         true_negatives = np.sum(confusion) - np.sum(confusion[i]) - \
-            np.sum(confusion[:][i]) + confusion[i][i]
+            np.sum(confusion[:, i]) + confusion[i][i]
         all_negatives = np.sum(confusion) - np.sum(confusion[i])
 
         specificity[i] = true_negatives / all_negatives
