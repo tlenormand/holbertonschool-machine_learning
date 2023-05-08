@@ -19,7 +19,7 @@ def optimize_model(network, alpha, beta1, beta2):
     """
     network.compile(
         optimizer=K.optimizers.Adam(
-            learning_rate=alpha,
+            lr=alpha,
             beta_1=beta1,
             beta_2=beta2
         ),
