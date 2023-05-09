@@ -29,19 +29,18 @@ def train_model(network, data, labels, batch_size, epochs,
     # ref: https://keras.io/api/models/model_training_apis/#fit-method
     callbacks = []
 
-    if early_stopping and validation_data:
-        early_stopping = K.callbacks.EarlyStopping(
-            monitor='val_loss',
-            patience=patience
-        )
-        callbacks.append(early_stopping)
-
-    if learning_rate_decay and early_stopping:
+    if learning_rate_decay and validation_data:
         lr_decay = K.callbacks.LearningRateScheduler(
             schedule=alpha / (1 + decay_rate * epochs),
             verbose=1
         )
         callbacks.append(lr_decay)
+
+    if early_stopping and validation_data:
+        early_stopping = K.callbacks.EarlyStopping(
+            patience=patience
+        )
+        callbacks.append(early_stopping)
 
     return network.fit(
         x=data,
