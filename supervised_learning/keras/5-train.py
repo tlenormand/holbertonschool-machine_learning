@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ Train """
 
+
 def train_model(network, data, labels, batch_size, epochs,
                 validation_data=None, verbose=True, shuffle=False):
     """ Function that trains a model using mini-batch gradient descent
@@ -21,11 +22,11 @@ def train_model(network, data, labels, batch_size, epochs,
         The History object generated after training the model
     """
     return network.fit(
-        x = data,
-        y = labels,
-        batch_size = batch_size,
-        epochs = epochs,
-        verbose = verbose,
-        shuffle = shuffle,
-        validation_data = validation_data
+        x=data,
+        y=labels,
+        batch_size=batch_size,
+        epochs=epochs,
+        verbose=verbose,
+        shuffle=shuffle,
+        validation_data=validation_data
     )

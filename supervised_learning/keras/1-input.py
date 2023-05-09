@@ -20,29 +20,27 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
         the keras model
     """
     # initialize model with input class
-    x = K.Input(shape = (nx,))
-
-    # first layer
-    y = K.layers.Dense(
-        layers[0],
-        activation = activations[0],
-        kernel_regularizer = K.regularizers.l2(lambtha)
-    )(x)
-
-    y = K.layers.Dropout(1 - keep_prob)(y)
+    x = y = K.Input(shape=(nx,))
 
     # next layers
     for layer in range(len(layers)):
-        y = K.layers.Dense(
+        dense = K.layers.Dense(
             layers[layer],
-            activation = activations[layer],
-            kernel_regularizer = K.regularizers.l2(lambtha)
-        )(y)
+            activation=activations[layer],
+            kernel_regularizer=K.regularizers.l2(lambtha)
+        )
 
+        # connect previous layer to next layer
+        y = dense(y)
+
+        # dropout layer for next layer
         if layer < len(layers) - 1:
-            y = K.layers.Dropout(1 - keep_prob)(y)
+            dropout = K.layers.Dropout(1 - keep_prob)
+
+            # connect next layer to dropout
+            y = dropout(y)
 
     # create model
-    model = K.Model(inputs = x, outputs = y)
+    model = K.Model(inputs=x, outputs=y)
 
     return model

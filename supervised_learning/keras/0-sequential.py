@@ -21,22 +21,22 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
     """
     model = K.Sequential()
 
-    # First layer
+    # first layer
     model.add(K.layers.Dense(
         layers[0],
-        activation = activations[0],
-        kernel_regularizer = K.regularizers.l2(lambtha),
-        input_shape = (nx,)
+        activation=activations[0],
+        kernel_regularizer=K.regularizers.l2(lambtha),
+        input_shape=(nx,)
     ))
 
     model.add(K.layers.Dropout(1 - keep_prob))
 
-    # Next layers
+    # next layers
     for layer in range(1, len(layers)):
         model.add(K.layers.Dense(
             layers[layer],
-            activation = activations[layer],
-            kernel_regularizer = K.regularizers.l2(lambtha)
+            activation=activations[layer],
+            kernel_regularizer=K.regularizers.l2(lambtha)
         ))
 
         if layer < len(layers) - 1:
