@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-""" Early Stopping """
+""" Train """
 
 import tensorflow.keras as K
 
 
 def train_model(network, data, labels, batch_size, epochs,
                 validation_data=None, early_stopping=False,
-                patience=0, verbose=True, shuffle=False):
+                patience=0, learning_rate_decay=False, alpha=0.1,
+                decay_rate=1, verbose=True, shuffle=False):
     """ Function that trains a model using mini-batch gradient descent
 
     Arguments:
@@ -34,6 +35,13 @@ def train_model(network, data, labels, batch_size, epochs,
             patience = patience
         )
         callbacks.append(early_stopping)
+
+    if learning_rate_decay and validation_data:
+        lr_decay = K.callbacks.LearningRateScheduler(
+            schedule = alpha / (1 + decay_rate * epochs),
+            verbose = 1
+        )
+        callbacks.append(lr_decay)
 
     return network.fit(
         x = data,
