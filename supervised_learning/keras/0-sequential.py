@@ -29,7 +29,8 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
         input_shape=(nx,)
     ))
 
-    model.add(K.layers.Dropout(1 - keep_prob))
+    if len(layers) > 1:
+        model.add(K.layers.Dropout(1 - keep_prob))
 
     # next layers
     for layer in range(1, len(layers)):
