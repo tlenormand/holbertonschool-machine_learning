@@ -23,10 +23,24 @@ def convolve_grayscale_same(images, kernel):
     """
     def add_padding(images):
         """ add padding to the image """
+        if kernel_heigh % 2:
+            padding_heigh = int((kernel_heigh - 1) / 2)
+        else:
+            padding_heigh = int(kernel_heigh / 2)
+
+        if kernel_width % 2:
+            padding_width = int((kernel_width - 1) / 2)
+        else:
+            padding_width = int(kernel_width / 2)
+
         return np.pad(
             images,
             # ((before height, after height), (before width, after width))
-            pad_width=((0, 0), (1, 1), (1, 1)),
+            pad_width=(
+                (0, 0),
+                (padding_heigh, padding_heigh),
+                (padding_width, padding_width)
+            ),
             mode='constant'
         )
 

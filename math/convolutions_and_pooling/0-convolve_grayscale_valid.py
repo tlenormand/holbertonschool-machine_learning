@@ -34,7 +34,11 @@ def convolve_grayscale_valid(images, kernel):
             # every image
             # height from i to kernel height + i
             # width from j to kernel width + j
-            image = images[:, heigh:heigh + kernel_heigh, width:width + kernel_width]
+            image = images[
+                :,
+                heigh:heigh + kernel_heigh,
+                width:width + kernel_width
+            ]
             # kernel contains operations for every image
             # axis if for the image
             # 0 the number of images, 1 the height, 2 the width
