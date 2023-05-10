@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" Convolutional Neural Networks """
 
 import numpy as np
 
@@ -49,7 +50,13 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     if padding == 'valid':
         padding = (0, 0)
     elif padding == 'same':
-        padding = (1, 1)
+        padding = (
+            int(((image_heigh - 1) * stride_heigh +
+                kernel_heigh - image_heigh) / 2 + 1),
+            int(((image_width - 1) * stride_width +
+                kernel_width - image_width) / 2 + 1)
+        )
+
     images = add_padding(images, padding)
 
     # output size
@@ -61,17 +68,16 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     ) + 1
 
     conv = np.zeros((nb_image, conv_heigh, conv_width))
-    for heigh in range(0, image_heigh, stride_heigh):
-        for width in range(0, image_width, stride_width):
+
+    for heigh in range(conv_heigh):
+        for width in range(conv_width):
+            heigh_strided = heigh * stride_heigh
+            width_strided = width * stride_width
             image = images[
                 :,
-                heigh:heigh + kernel_heigh,
-                width:width + kernel_width
+                heigh_strided:heigh_strided + kernel_heigh,
+                width_strided:width_strided + kernel_width
             ]
-            if image.shape[1:3] != kernel.shape:
-                break
-
-            conv[:, heigh // stride_heigh, width // stride_width] = \
-                np.sum(image * kernel, axis=(1, 2))
+            conv[:, heigh, width] = np.sum((kernel * image), axis=(1, 2))
 
     return conv
