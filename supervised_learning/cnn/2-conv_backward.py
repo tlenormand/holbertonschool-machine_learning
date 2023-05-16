@@ -52,7 +52,7 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
 
     nb_A_prev, height_A_prev, width_A_prev, channel_A_prev = A_prev.shape
     number_dz, height_dz, width_dz, channel_dz = dZ.shape
-    height_kernel, width_kernel, channel_kernel, nb_kernel = W.shape
+    height_kernel, width_kernel, prev_kernel, nb_kernel = W.shape
     stride_heigh, stride_width = stride
 
     # convolution output
@@ -73,11 +73,10 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
 
     dA = add_padding(A_prev, padding)
 
-    for n in range(nb_A_prev):  # n number of images
+    for n in range(number_dz):  # n number of images
         for h in range(height_dz):  # h height of the output
             for w in range(width_dz):  # w width of the output
-                for k in range(nb_kernel):  # k number of kernels
-                    dz = dZ[n, h, w, k]
+                for k in range(channel_dz):  # k number of kernels
                     mat = dA[
                         n,
                         h * stride_heigh: h * stride_heigh + height_kernel,
@@ -89,7 +88,7 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                         h * stride_heigh: h * stride_heigh + height_kernel,
                         w * stride_width: w * stride_width + width_kernel,
                         :
-                    ] += W[..., k] * dz
-                    dW[..., k] += mat * dz
+                    ] += W[..., k] * dZ[n, h, w, k]
+                    dW[..., k] += mat * dZ[n, h, w, k]
 
     return dA, dW, db
