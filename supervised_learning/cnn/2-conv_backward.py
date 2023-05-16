@@ -55,34 +55,35 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     height_kernel, width_kernel, prev_kernel, nb_kernel = W.shape
     stride_heigh, stride_width = stride
 
-    # convolution output
-    dA = np.zeros(A_prev.shape)
-    dW = np.zeros(W.shape)
-    db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
-
     # add padding to the image in order to keep the same size
     if padding == 'valid':
         padding = (0, 0)
     elif padding == 'same':
         padding = (
             int(((height_A_prev - 1) * stride_heigh +
-                height_kernel - height_A_prev) // 2),
+                height_kernel - height_A_prev) / 2) + 1,
             int(((width_A_prev - 1) * stride_width +
-                width_kernel - width_A_prev) // 2)
+                width_kernel - width_A_prev) / 2) + 1
         )
 
-    A_prev = add_padding(A_prev, padding)
+    padded_A_prev = add_padding(A_prev, padding)
+
+    # convolution output
+    dA = np.zeros(padded_A_prev.shape)
+    dW = np.zeros(W.shape)
+    db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
 
     for n in range(number_dz):  # n number of images
         for h in range(height_dz):  # h height of the output
             for w in range(width_dz):  # w width of the output
                 for k in range(channel_dz):  # k number of kernels
-                    mat = A_prev[
+                    mat = padded_A_prev[
                         n,
                         h * stride_heigh: h * stride_heigh + height_kernel,
                         w * stride_width: w * stride_width + width_kernel,
                         :
                     ]
+                    print(dA.shape, W.shape, dZ.shape)
                     dA[
                         n,
                         h * stride_heigh: h * stride_heigh + height_kernel,
