@@ -68,9 +68,9 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
 
     # output size
     output_heigh = int((image_heigh + 2 * padding[0] - kernel_heigh) /
-                          stride_heigh + 1)
+                       stride_heigh + 1)
     output_width = int((image_width + 2 * padding[1] - kernel_width) /
-                            stride_width + 1)
+                       stride_width + 1)
 
     # convolution output
     output = np.zeros((nb_image, output_heigh, output_width, nb_kernel))

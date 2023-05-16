@@ -49,12 +49,17 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
             ),
             mode='constant'
         )
-    
+
     height_A_prev, width_A_prev, channel_A_prev, nb_A_prev = A_prev.shape
     height_dz, width_dz, channel_dz, nb_dz = dZ.shape
     height_kernel, width_kernel, channel_kernel, nb_kernel = W.shape
     stride_heigh, stride_width = stride
-    
+
+    # convolution output
+    dA = np.zeros(A_prev.shape)
+    dW = np.zeros(W.shape)
+    db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
+
     # add padding to the image in order to keep the same size
     if padding == 'valid':
         padding = (0, 0)
@@ -66,22 +71,35 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                 width_kernel - width_A_prev) / 2 + 1)
         )
 
-    A_prev = add_padding(A_prev, padding)
+    dA = add_padding(A_prev, padding)
 
     padding_heigh, padding_width = padding
 
     # output size
-    output_heigh = int(1 + (height_A_prev + 2 * padding_heigh - height_kernel) / stride_heigh)
-    output_width = int(1 + (width_A_prev + 2 * padding_width - width_kernel) / stride_width)
+    output_heigh = int(
+        1 + (height_A_prev + 2 * padding_heigh - height_kernel) / stride_heigh
+    )
+    output_width = int(
+        1 + (width_A_prev + 2 * padding_width - width_kernel) / stride_width
+    )
 
-    # convolution output
-    dA_prev = np.zeros(A_prev.shape)
-    dW = np.zeros(W.shape)
-    db = np.zeros(b.shape)
+    for n in range(nb_A_prev):  # n number of images
+        for h in range(output_heigh):  # h height of the output
+            for w in range(output_width):  # w width of the output
+                for k in range(nb_kernel):  # k number of kernels
+                    dz = dZ[n, h, w, k]
+                    mat = dA[
+                        n,
+                        h * stride_heigh: h * stride_heigh + height_kernel,
+                        w * stride_width: w * stride_width + width_kernel,
+                        :
+                    ]
+                    dA[
+                        n,
+                        h * stride_heigh: h * stride_heigh + height_kernel,
+                        w * stride_width: w * stride_width + width_kernel,
+                        :
+                    ] += W[..., k] * dz
+                    dW[..., k] += mat * dz
 
-    for i in range(nb_A_prev):
-        for j in range(output_heigh):
-            for k in range(output_width):
-                for l in range(nb_kernel):
-
-    return dA_prev, dW, db
+    return dA, dW, db
