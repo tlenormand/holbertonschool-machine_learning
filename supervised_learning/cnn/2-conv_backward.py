@@ -50,8 +50,8 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
             mode='constant'
         )
 
-    height_A_prev, width_A_prev, channel_A_prev, nb_A_prev = A_prev.shape
-    height_dz, width_dz, channel_dz, nb_dz = dZ.shape
+    nb_A_prev, height_A_prev, width_A_prev, channel_A_prev = A_prev.shape
+    number_dz, height_dz, width_dz, channel_dz = dZ.shape
     height_kernel, width_kernel, channel_kernel, nb_kernel = W.shape
     stride_heigh, stride_width = stride
 
@@ -73,19 +73,9 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
 
     dA = add_padding(A_prev, padding)
 
-    padding_heigh, padding_width = padding
-
-    # output size
-    output_heigh = int(
-        1 + (height_A_prev + 2 * padding_heigh - height_kernel) / stride_heigh
-    )
-    output_width = int(
-        1 + (width_A_prev + 2 * padding_width - width_kernel) / stride_width
-    )
-
     for n in range(nb_A_prev):  # n number of images
-        for h in range(output_heigh):  # h height of the output
-            for w in range(output_width):  # w width of the output
+        for h in range(height_dz):  # h height of the output
+            for w in range(width_dz):  # w width of the output
                 for k in range(nb_kernel):  # k number of kernels
                     dz = dZ[n, h, w, k]
                     mat = dA[
