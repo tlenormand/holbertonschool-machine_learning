@@ -83,7 +83,6 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                         w * stride_width: w * stride_width + width_kernel,
                         :
                     ]
-                    print(dA.shape, W.shape, dZ.shape)
                     dA[
                         n,
                         h * stride_heigh: h * stride_heigh + height_kernel,
