@@ -59,9 +59,9 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     elif padding == 'same':
         padding = (
             int(((image_heigh - 1) * stride_heigh +
-                kernel_heigh - image_heigh) / 2 + 1),
+                kernel_heigh - image_heigh) // 2),
             int(((image_width - 1) * stride_width +
-                kernel_width - image_width) / 2 + 1)
+                kernel_width - image_width) // 2)
         )
 
     A_prev = add_padding(A_prev, padding)
