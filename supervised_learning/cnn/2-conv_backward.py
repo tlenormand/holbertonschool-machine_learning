@@ -34,34 +34,70 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
         the partial derivatives with respect to the previous layer (dA_prev),
             the kernels (dW), and the biases (db), respectively
     """
-    m, h_prev, w_prev, ch_prev = A_prev.shape
-    h_stride, w_stride = stride
-    kh, kw, _, _ = W.shape
-    _, h_new, w_new, c_new = dZ.shape
+    def add_padding(images, padding):
+        """ add padding to the image """
+        height, width = padding
 
-    if padding == "same":
-        h_pad = int((((h_prev - 1) * h_stride + kh - h_prev) / 2) + 1)
-        w_pad = int((((w_prev - 1) * w_stride + kw - w_prev) / 2) + 1)
-    else:
-        h_pad, w_pad = 0, 0
+        return np.pad(
+            images,
+            # ((before height, after height), (before width, after width))
+            pad_width=(
+                (0, 0),
+                (height, height),
+                (width, width),
+                (0, 0)
+            ),
+            mode='constant'
+        )
 
-    A_prev_padded = np.pad(A_prev, [(0, 0), (h_pad, h_pad), (w_pad, w_pad), (0, 0)], mode="constant")
-    dA_padded = np.zeros(shape=A_prev_padded.shape)
-    dW = np.zeros(shape=W.shape)
+    nb_A_prev, height_A_prev, width_A_prev, channel_A_prev = A_prev.shape
+    number_dz, height_dz, width_dz, channel_dz = dZ.shape
+    height_kernel, width_kernel, prev_kernel, nb_kernel = W.shape
+    stride_heigh, stride_width = stride
+
+    # add padding to the image in order to keep the same size
+    if padding == 'valid':
+        padding = (0, 0)
+    elif padding == 'same':
+        padding = (
+            int(((height_A_prev - 1) * stride_heigh +
+                height_kernel - height_A_prev) / 2) + 1,
+            int(((width_A_prev - 1) * stride_width +
+                width_kernel - width_A_prev) / 2) + 1
+        )
+
+    padded_A_prev = add_padding(A_prev, padding)
+
+    # convolution output
+    dA = np.zeros(padded_A_prev.shape)
+    dW = np.zeros(W.shape)
     db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
 
-    for sample in range(m):
-        for h_i in range(h_new):
-            for w_i in range(w_new):
-                for ch in range(c_new):
-                    h_is = h_i * h_stride
-                    w_is = w_i * w_stride
-                    dA_padded[sample, h_is:h_is + kh, w_is:w_is + kw, :] += W[:, :, :, ch] * dZ[sample, h_i, w_i, ch]
-                    dW[:, :, :, ch] += A_prev_padded[sample, h_is:h_is + kh, w_is:w_is + kw, :] * dZ[sample, h_i, w_i, ch]
+    for n in range(number_dz):  # n number of images
+        for h in range(height_dz):  # h height of the output
+            for w in range(width_dz):  # w width of the output
+                for k in range(channel_dz):  # k number of kernels
+                    mat = padded_A_prev[
+                        n,
+                        h * stride_heigh: h * stride_heigh + height_kernel,
+                        w * stride_width: w * stride_width + width_kernel,
+                        :
+                    ]
+                    dA[
+                        n,
+                        h * stride_heigh: h * stride_heigh + height_kernel,
+                        w * stride_width: w * stride_width + width_kernel,
+                        :
+                    ] += W[..., k] * dZ[n, h, w, k]
+                    dW[..., k] += mat * dZ[n, h, w, k]
 
-    if padding == "same":
-        dA = dA_padded[:, h_pad:h_prev - h_pad, w_pad:w_prev - w_pad, :]
-    else:
-        dA = dA_padded
+    # remove padding previously used to keep the same size
+    if padding == 'same':
+        dA = dA[
+            :,
+            padding[0]: -padding[0],
+            padding[1]: -padding[1],
+            :
+        ]
 
     return dA, dW, db
