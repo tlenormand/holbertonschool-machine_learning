@@ -22,9 +22,9 @@ def lenet5(x, y):
         a tensor for the loss of the netowrk
         a tensor for the accuracy of the network
     """
-    # initializer = tf.contrib.layers.variance_scaling_initializer()
+    initializer = tf.contrib.layers.variance_scaling_initializer()
+    # initializer = tf.truncated_normal_initializer(stddev=0.1)
     # initializer = tf.keras.initializers.VarianceScaling(scale=2.0)
-    initializer = tf.truncated_normal_initializer(stddev=0.1)
 
     # Convolutional layer 1
     conv1 = tf.layers.Conv2D(
