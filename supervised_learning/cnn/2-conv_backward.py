@@ -61,9 +61,9 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     elif padding == 'same':
         padding = (
             int(((height_A_prev - 1) * stride_heigh +
-                height_kernel - height_A_prev) // 2),
+                height_kernel - height_A_prev) / 2) + 1,
             int(((width_A_prev - 1) * stride_width +
-                width_kernel - width_A_prev) // 2)
+                width_kernel - width_A_prev) / 2) + 1
         )
 
     padded_A_prev = add_padding(A_prev, padding)
