@@ -1,103 +1,78 @@
 #!/usr/bin/env python3
-""" Convolutional Back Prop """
+
+"""Useless comment"""
+
 
 import numpy as np
 
 
-def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
-    """ performs back propagation over a convolutional layer of a neural
-            network
-
-    Arguments:
-        dZ: numpy.ndarray of shape (m, h_new, w_new, c_new) containing the
-                partial derivatives with respect to the unactivated output of
-                the convolutional layer
-            h_new: the height of the output
-            w_new: the width of the output
-        A_prev: numpy.ndarray of shape (m, h_prev, w_prev, c_prev) containing
-                the output of the previous layer
-            h_prev: the height of the previous layer
-            w_prev: the width of the previous layer
-        W: numpy.ndarray of shape (kh, kw, c_prev, c_new) containing the
-                kernels for the convolution
-            kh: the filter height
-            kw: the filter width
-        b: numpy.ndarray of shape (1, 1, 1, c_new) containing the biases
-                applied to the convolution
-        padding: string that is either same or valid, indicating the type of
-                padding used
-        stride: tuple of (sh, sw) containing the strides for the convolution
-            sh: the stride for the height
-            sw: the stride for the width
-
-    Returns:
-        the partial derivatives with respect to the previous layer (dA_prev),
-            the kernels (dW), and the biases (db), respectively
+def conv_backward(dZ, A_prev, W, _, padding="same", stride=(1, 1)):
     """
-    def add_padding(images, padding):
-        """ add padding to the image """
-        height, width = padding
 
-        return np.pad(
-            images,
-            # ((before height, after height), (before width, after width))
-            pad_width=(
-                (0, 0),
-                (height, height),
-                (width, width),
-                (0, 0)
-            ),
-            mode='constant'
-        )
+    :param dZ: np.ndarray -- containing the partial derivatives with
+                             respect to the unactivated output of the
+                             convolutional layer
+               m is the number of examples
+               h_new is the height of the output
+               w_new is the width of the output
+               c_new is the number of channels in the output
+    :param A_prev: np.ndarray -- containing the output of the previous
+                                 layer
+                   h_prev is the height of the previous layer
+                   w_prev is the width of the previous layer
+                   c_prev is the number of channels in the previous layer
+    :param W: np.ndarray -- containing the kernels for the convolution
+              kh is the filter height
+              kw is the filter width
+    :param _: Anything
+    :param padding: Is a string that is either same or valid, indicating
+                    the type of padding used
+    :param stride: np.ndarray -- containing the strides for the convolution
+                   sh is the stride for the height
+                   sw is the stride for the width
+    :return: The partial derivatives with respect to the previous layer
+             (dA_prev), the kernels (dW), and the biases (db),
+             respectively
+    """
+    m, h_prev, w_prev, ch_prev = A_prev.shape
+    h_stride, w_stride = stride
+    kh, kw, _, _ = W.shape
+    _, h_new, w_new, c_new = dZ.shape
 
-    nb_A_prev, height_A_prev, width_A_prev, channel_A_prev = A_prev.shape
-    number_dz, height_dz, width_dz, channel_dz = dZ.shape
-    height_kernel, width_kernel, prev_kernel, nb_kernel = W.shape
-    stride_heigh, stride_width = stride
+    if padding == "same":
+        h_pad = int(np.ceil(((h_prev - 1) * h_stride + kh - h_prev) / 2))
+        w_pad = int(np.ceil(((w_prev - 1) * w_stride + kw - w_prev) / 2))
+    else:
+        h_pad, w_pad = 0, 0
 
-    # add padding to the image in order to keep the same size
-    if padding == 'valid':
-        padding = (0, 0)
-    elif padding == 'same':
-        padding = (
-            int(((height_A_prev - 1) * stride_heigh +
-                height_kernel - height_A_prev) / 2) + 1,
-            int(((width_A_prev - 1) * stride_width +
-                width_kernel - width_A_prev) / 2) + 1
-        )
-
-    padded_A_prev = add_padding(A_prev, padding)
-
-    # convolution output
-    dA = np.zeros(padded_A_prev.shape)
-    dW = np.zeros(W.shape)
+    A_prev_padded = np.pad(
+        A_prev,
+        [(0, 0), (h_pad, h_pad), (w_pad, w_pad), (0, 0)],
+        mode="constant"
+    )
+    dA_padded = np.zeros(shape=A_prev_padded.shape)
+    dW = np.zeros(shape=W.shape)
     db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
 
-    for n in range(number_dz):  # n number of images
-        for h in range(height_dz):  # h height of the output
-            for w in range(width_dz):  # w width of the output
-                for k in range(channel_dz):  # k number of kernels
-                    mat = padded_A_prev[
-                        n,
-                        h * stride_heigh: h * stride_heigh + height_kernel,
-                        w * stride_width: w * stride_width + width_kernel,
-                        :
-                    ]
-                    dA[
-                        n,
-                        h * stride_heigh: h * stride_heigh + height_kernel,
-                        w * stride_width: w * stride_width + width_kernel,
-                        :
-                    ] += W[..., k] * dZ[n, h, w, k]
-                    dW[..., k] += mat * dZ[n, h, w, k]
+    for sample in range(m):
+        for h_i in range(h_new):
+            for w_i in range(w_new):
+                for ch in range(c_new):
+                    h_is = h_i * h_stride
+                    w_is = w_i * w_stride
+                    dA_padded[sample,
+                              h_is:h_is + kh,
+                              w_is:w_is + kw,
+                              :] += W[:, :, :, ch] * dZ[sample, h_i, w_i, ch]
+                    dW[:, :, :, ch] += A_prev_padded[sample,
+                                                     h_is:h_is + kh,
+                                                     w_is:w_is + kw,
+                                                     :] * dZ[sample, h_i,
+                                                             w_i, ch]
 
-    # remove padding previously used to keep the same size
-    if padding == 'same':
-        dA = dA[
-            :,
-            padding[0]: -padding[0],
-            padding[1]: -padding[1],
-            :
-        ]
+    if padding == "same":
+        dA = dA_padded[:, h_pad:-h_pad, w_pad:-w_pad, :]
+    else:
+        dA = dA_padded
 
     return dA, dW, db
