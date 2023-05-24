@@ -38,8 +38,9 @@ def inception_network():
     # =============================================================================
     # Convolutional layer with 3x3 kernel and stride of 1x1
     conv2 = K.layers.Conv2D(
-        filters=192,
-        kernel_size=(3, 3),
+        filters=64,
+        kernel_size=(1, 1),
+        strides=(1, 1),
         padding='same',
         activation='relu'
     )(max_pool1)
