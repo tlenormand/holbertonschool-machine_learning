@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" Projection Block """
 
 import tensorflow.keras as K
 
@@ -34,7 +35,7 @@ def projection_block(A_prev, filters, s=2):
         strides=s,
         kernel_size=(1, 1),
         padding='same',
-        activation='relu',
+        activation='linear',
         kernel_initializer=init
     )(A_prev)
 
@@ -47,7 +48,7 @@ def projection_block(A_prev, filters, s=2):
         filters=F3,
         kernel_size=(3, 3),
         padding='same',
-        activation='relu',
+        activation='linear',
         kernel_initializer=init
     )(activation)
 
@@ -60,7 +61,7 @@ def projection_block(A_prev, filters, s=2):
         filters=F12,
         kernel_size=(1, 1),
         padding='same',
-        activation='relu',
+        activation='linear',
         kernel_initializer=init
     )(activation_1)
 
@@ -71,7 +72,7 @@ def projection_block(A_prev, filters, s=2):
         kernel_size=(1, 1),
         strides=s,
         padding='same',
-        activation='relu',
+        activation='linear',
         kernel_initializer=init
     )(A_prev)
 
