@@ -152,7 +152,7 @@ def inception_network():
         kernel_initializer=K.initializers.he_normal()
     )(dropout)
 
-    # # =============================================================================
+    # =============================================================================
     # # Softmax activation
     # softmax = K.layers.Activation(
     #     activation='softmax'

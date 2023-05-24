@@ -85,5 +85,5 @@ def inception_block(A_prev, filters):
     )(poolP)
 
     # =============================================================================
-    # Concatenate the outputs of the previous layers along the channel dimension
+    # Concatenate outputs
     return K.layers.concatenate([conv1, conv3, conv5, convPP])
