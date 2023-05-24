@@ -36,14 +36,22 @@ def inception_network():
     )(conv1)
 
     # =============================================================================
-    # Convolutional layer with 3x3 kernel and stride of 1x1
+    # Convolutional layer with 1x1 kernel and stride of 1x1
     conv2 = K.layers.Conv2D(
         filters=64,
         kernel_size=(1, 1),
-        strides=(1, 1),
         padding='same',
         activation='relu'
     )(max_pool1)
+
+    # =============================================================================
+    # Convolutional layer with 3x3 kernel and stride of 1x1
+    conv3 = K.layers.Conv2D(
+        filters=192,
+        kernel_size=(3, 3),
+        padding='same',
+        activation='relu'
+    )(conv2)
 
     # =============================================================================
     # Max pooling layer with kernels of shape 3x3 and default strides
@@ -51,7 +59,7 @@ def inception_network():
         pool_size=(3, 3),
         strides=(2, 2),
         padding='same'
-    )(conv2)
+    )(conv3)
 
     # =============================================================================
     # Inception block 3a
