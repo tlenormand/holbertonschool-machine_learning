@@ -40,7 +40,7 @@ def projection_block(A_prev, filters, s=2):
     )(A_prev)
 
     batch_normalization = K.layers.BatchNormalization()(conv2d)
-    activation = K.layers.Activation('relu')(batch_normalization)
+    activation = K.layers.ReLU()(batch_normalization)
 
     # =============================================================================
     # 1x1 Convolution
@@ -53,7 +53,7 @@ def projection_block(A_prev, filters, s=2):
     )(activation)
 
     batch_normalization_1 = K.layers.BatchNormalization()(conv2d_1)
-    activation_1 = K.layers.Activation('relu')(batch_normalization_1)
+    activation_1 = K.layers.ReLU()(batch_normalization_1)
 
     # =============================================================================
     # 1x1 Convolution
@@ -83,6 +83,6 @@ def projection_block(A_prev, filters, s=2):
     # Add shortcut to main path
     add = K.layers.Add()([batch_normalization_2, batch_normalization_3])
 
-    activation_2 = K.layers.Activation('relu')(add)
+    activation_2 = K.layers.ReLU()(add)
 
     return activation_2
