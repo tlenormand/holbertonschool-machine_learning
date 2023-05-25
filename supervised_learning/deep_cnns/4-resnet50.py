@@ -71,8 +71,7 @@ def resnet50():
     # =============================================================================
     # Average pooling layer with kernels of shape 7x7
     avg_pool = K.layers.AveragePooling2D(
-        pool_size=(7, 7),
-        strides=(1, 1),
+        strides=(7, 7),
         padding='same'
     )(identity)
 
