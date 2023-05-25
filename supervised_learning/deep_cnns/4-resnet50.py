@@ -30,7 +30,7 @@ def resnet50():
     )(input_layer)
 
     batch_normalization = K.layers.BatchNormalization()(conv1)
-    activation = K.layers.Activation('relu')(batch_normalization)
+    activation = K.layers.ReLU()(batch_normalization)
 
     # =============================================================================
     # Max pooling layer with kernels of shape 3x3 and default strides
