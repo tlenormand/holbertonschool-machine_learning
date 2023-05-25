@@ -29,13 +29,16 @@ def resnet50():
         activation='relu'
     )(input_layer)
 
+    batch_normalization = K.layers.BatchNormalization()(conv1)
+    activation = K.layers.Activation('linear')(batch_normalization)
+
     # =============================================================================
     # Max pooling layer with kernels of shape 3x3 and default strides
     max_pool1 = K.layers.MaxPooling2D(
         pool_size=(3, 3),
         strides=(2, 2),
         padding='same'
-    )(conv1)
+    )(activation)
 
     # =============================================================================
     # Projection block
