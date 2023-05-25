@@ -18,6 +18,7 @@ def resnet50():
         the keras model
     """
     input_layer = K.layers.Input(shape=(224, 224, 3))
+    initializer = K.initializers.he_normal(seed=None)
 
     # =============================================================================
     # Convolutional layer with 7x7 kernel and stride of 2x2
@@ -26,7 +27,8 @@ def resnet50():
         kernel_size=(7, 7),
         strides=(2, 2),
         padding='same',
-        activation='linear'
+        activation='linear',
+        kernel_initializer=initializer
     )(input_layer)
 
     batch_normalization = K.layers.BatchNormalization()(conv1)
@@ -80,7 +82,7 @@ def resnet50():
     softmax = K.layers.Dense(
         units=1000,
         activation='softmax',
-        kernel_initializer=K.initializers.he_normal(seed=None)
+        kernel_initializer=initializer
     )(avg_pool)
 
     # =============================================================================
