@@ -215,7 +215,8 @@ class Yolo:
 
         return (sup_boxes, sup_classes, sup_scores)
 
-    def load_images(self, folder_path):
+    @staticmethod
+    def load_images(folder_path):
         """ load images
 
         Arguments:
@@ -249,15 +250,22 @@ class Yolo:
                     - input_w: the input width for the Darknet model
                             Note: this can vary by model
                     - 3: number of color channels
+            - image_shapes: a numpy.ndarray of shape (ni, 2) containing the
+                    original height and width of the images
         """
-        input_h = self.model.input.shape[1].value
-        input_w = self.model.input.shape[2].value
+        input_width = self.model.input.shape[1]
+        input_height = self.model.input.shape[2]
         pimages = []
 
         for image in images:
             pimages.append(cv2.resize(
-                image, (input_w, input_h),
+                image, (input_width, input_height),
                 interpolation=cv2.INTER_CUBIC
             ) / 255)
 
-        return np.array(pimages)
+        image_shapes = np.stack(
+            [(image.shape[0], image.shape[1]) for image in images],
+            axis=0
+        )
+
+        return np.array(pimages), image_shapes

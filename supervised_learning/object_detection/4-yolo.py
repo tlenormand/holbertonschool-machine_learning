@@ -215,7 +215,8 @@ class Yolo:
 
         return (sup_boxes, sup_classes, sup_scores)
 
-    def load_images(self, folder_path):
+    @staticmethod
+    def load_images(folder_path):
         """ load images
 
         Arguments:
