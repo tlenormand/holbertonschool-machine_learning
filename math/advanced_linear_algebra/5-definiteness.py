@@ -17,6 +17,8 @@ def definiteness(matrix):
         raise TypeError('matrix must be a numpy.ndarray')
     if len(matrix.shape) != 2 or matrix.shape[0] != matrix.shape[1]:
         return None
+    if not np.all(np.transpose(matrix) == matrix):
+        return None
 
     eigenvalues = np.linalg.eigvals(matrix)
     if all(eigenvalues > 0):
