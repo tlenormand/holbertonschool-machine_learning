@@ -11,6 +11,9 @@ def determinant(matrix):
     Returns:
         the determinant of matrix
     """
+    if matrix == [[]]:
+        return 1
+
     if type(matrix) is not list or len(matrix) == 0:
         raise TypeError('matrix must be a list of lists')
     for row in matrix:
@@ -19,9 +22,6 @@ def determinant(matrix):
     for row in matrix:
         if len(row) != len(matrix):
             raise ValueError('matrix must be a square matrix')
-
-    if matrix == [[]]:
-        return 1
 
     if len(matrix) == 1:
         return matrix[0][0]
