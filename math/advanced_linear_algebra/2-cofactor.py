@@ -31,6 +31,9 @@ def cofactor(matrix):
     sign = 1
     cofactor = []
     for i in range(len(minorMatrix)):
+        if len(minorMatrix) % 2 == 0 and i == 1:
+            sign *= -1
+
         cofactor.append([])
         for j in range(len(minorMatrix)):
             cofactor[i].append(sign * minorMatrix[i][j])
