@@ -31,7 +31,7 @@ def cofactor(matrix):
     sign = 1
     cofactor = []
     for i in range(len(minorMatrix)):
-        if len(minorMatrix) % 2 == 0 and i == 1:
+        if len(minorMatrix) % 2 == 0 and i % 2 != 0:
             sign *= -1
 
         cofactor.append([])
