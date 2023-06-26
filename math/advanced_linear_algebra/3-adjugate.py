@@ -31,6 +31,9 @@ def adjugate(matrix):
     sign = 1
     adjugate = []
     for i in range(len(minorMatrix)):
+        if len(minorMatrix) % 2 == 0 and i == 1:
+            sign *= -1
+
         adjugate.append([])
         for j in range(len(minorMatrix)):
             adjugate[i].append(sign * minorMatrix[j][i])
