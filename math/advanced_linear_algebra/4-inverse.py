@@ -39,6 +39,6 @@ def inverse(matrix):
     for i in range(len(cofactorMatrix)):
         inverse.append([])
         for j in range(len(cofactorMatrix)):
-            inverse[i].append(cofactorMatrix[i][j] / det)
+            inverse[i].append(cofactorMatrix[j][i] / det)
 
     return inverse
