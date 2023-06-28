@@ -19,11 +19,10 @@ class MultiNormal():
                 n is the number of data points
                 d is the number of dimensions in each data point
         """
-        dataT = data.T
-
-        if type(dataT) is not np.ndarray or len(dataT.shape) != 2:
+        if type(data) is not np.ndarray or len(data.T.shape) != 2:
             raise TypeError('data must be a 2D numpy.ndarray')
 
+        dataT = data.T
         n, d = dataT.shape
         if n < 2:
             raise ValueError('data must contain multiple data points')
