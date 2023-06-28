@@ -19,14 +19,18 @@ class MultiNormal():
                 n is the number of data points
                 d is the number of dimensions in each data point
         """
-        if type(data) is not np.ndarray or len(data.shape) != 2:
+        dataT = data.T
+
+        if type(dataT) is not np.ndarray or len(dataT.shape) != 2:
             raise TypeError('data must be a 2D numpy.ndarray')
 
-        n, d = data.shape
+        n, d = dataT.shape
         if n < 2:
             raise ValueError('data must contain multiple data points')
 
-        self.mean, self.cov = mean_cov(data.T)
+        mean, cov = mean_cov(dataT)
+        self.mean = mean.T
+        self.cov = cov
 
     def pdf(self, x):
         """ calculates the PDF at a data point
