@@ -6,7 +6,7 @@ import numpy as np
 
 def pca(X, var=0.95):
     """ performs PCA on a dataset
-    
+
     Arguments:
         X {np.ndarray} -- dataset of shape (n, d) where:
             n is the number of data points
