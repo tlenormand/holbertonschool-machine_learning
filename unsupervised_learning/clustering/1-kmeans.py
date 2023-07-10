@@ -26,13 +26,14 @@ def kmeans(X, k, iterations=1000):
     if not isinstance(iterations, int) or iterations < 1:
         return None, None
 
-    centroids = np.random.uniform(
+    old_centroids = np.random.uniform(
         np.min(X, axis=0),
         np.max(X, axis=0),
         (k, X.shape[1])
     )
 
     for _ in range(iterations):
+        centroids = old_centroids.copy()
         # calculate distances
         distances = np.linalg.norm(X - centroids[:, np.newaxis], axis=-1)
         # find nearest centroid f0r each point and assosiate it with clss
@@ -49,5 +50,14 @@ def kmeans(X, k, iterations=1000):
             else:
                 # assign the mean of all points in the cluster
                 centroids[j] = np.mean(X[np.where(clss == j)], axis=0)
+
+        # check if centroids have changed => early stop
+        if (old_centroids == centroids).all():
+            break
+        old_centroids = centroids.copy()
+
+    # calculate clss again with the final centroids
+    clss = np.argmin(np.linalg.norm(X - centroids[:, np.newaxis], axis=-1),
+                        axis=0)
 
     return centroids, clss
