@@ -16,6 +16,11 @@ def initialize(X, k):
     Returns: ndarray (k, d) initialized centroids
         or None on failure
     """
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
+        return None
+    if not isinstance(k, int) or k < 1:
+        return None
+
     return initialize(X, k-1) if k < 1 else np.random.uniform(
             np.min(X, axis=0),
             np.max(X, axis=0),
