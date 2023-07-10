@@ -4,30 +4,6 @@
 import numpy as np
 
 
-def initialize(X, k):
-    """ initializes cluster centroids for K-means
-
-    Arguments:
-        X ndarray (n, d) dataset to cluster
-            n number of data points
-            d number of dimensions for each data point
-        k positive int, number of clusters
-
-    Returns: ndarray (k, d) initialized centroids
-        or None on failure
-    """
-    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
-        return None
-    if not isinstance(k, int) or k < 1:
-        return None
-
-    return initialize(X, k-1) if k < 1 else np.random.uniform(
-            np.min(X, axis=0),
-            np.max(X, axis=0),
-            (k, X.shape[1])
-        )
-
-
 def kmeans(X, k, iterations=1000):
     """ performs K-means on a dataset
 
@@ -43,12 +19,20 @@ def kmeans(X, k, iterations=1000):
         clss ndarray (n,) index of the cluster in C that each data point
             belongs to
     """
-    clusters = initialize(X, k)
-    if clusters is None:
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
+        return None, None
+    if not isinstance(k, int) or k < 1:
+        return None, None
+    if not isinstance(iterations, int) or iterations < 1:
         return None, None
 
-    # centroids = np.zeros((k, 2))
-    centroids = np.random.uniform(np.min(X, axis=0), np.max(X, axis=0), (k, 2))
+    clusters = np.random.uniform(
+        np.min(X, axis=0),
+        np.max(X, axis=0),
+        (k, X.shape[1])
+    )
+
+    centroids = np.copy(clusters)
 
     for _ in range(iterations):
         # calculate distances
