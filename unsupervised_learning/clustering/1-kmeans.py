@@ -44,9 +44,11 @@ def kmeans(X, k, iterations=1000):
             # X[clss == j] is equivalent to X[np.where(clss == j)]
             if len(X[np.where(clss == j)]) == 0:
                 # assign a random point from X as centroid
-                centroids[j] = np.random.uniform(np.min(X, axis=0),
-                                                 np.max(X, axis=0),
-                                                 (1, 2))
+                centroids[j] = np.random.uniform(
+                    np.min(X, axis=0),
+                    np.max(X, axis=0),
+                    (1, X.shape[1])
+                )
             else:
                 # assign the mean of all points in the cluster
                 centroids[j] = np.mean(X[np.where(clss == j)], axis=0)
@@ -57,7 +59,11 @@ def kmeans(X, k, iterations=1000):
         old_centroids = centroids.copy()
 
     # calculate clss again with the final centroids
-    clss = np.argmin(np.linalg.norm(X - centroids[:, np.newaxis], axis=-1),
-                        axis=0)
+    clss = np.argmin(
+        np.linalg.norm(
+            X - centroids[:, np.newaxis],
+            axis=-1
+        ), axis=0
+    )
 
     return centroids, clss
