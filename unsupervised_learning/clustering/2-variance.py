@@ -19,6 +19,8 @@ def variance(X, C):
         return None
     if not isinstance(C, np.ndarray) or len(C.shape) != 2:
         return None
+    if X.shape[1] != C.shape[1]:
+        return None
 
     # calculate the distance from each point to its cluster centroid
     distances = np.linalg.norm(X - C[:, np.newaxis], axis=-1) ** 2
