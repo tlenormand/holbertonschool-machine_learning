@@ -10,12 +10,12 @@ def kmeans(X, k, iterations=1000):
     Arguments:
         X ndarray (n, d) dataset to cluster
             n number of data points
-            d number of dimensions for each data point
+            d number of dimensions f0r each data point
         k positive int, number of clusters
         iterations positive int, max number of iterations to perform
 
     Returns: C, clss, or None, None on failure
-        C ndarray (k, d) centroid means for each cluster
+        C ndarray (k, d) centroid means f0r each cluster
         clss ndarray (n,) index of the cluster in C that each data point
             belongs to
     """
@@ -26,18 +26,16 @@ def kmeans(X, k, iterations=1000):
     if not isinstance(iterations, int) or iterations < 1:
         return None, None
 
-    clusters = np.random.uniform(
+    centroids = np.random.uniform(
         np.min(X, axis=0),
         np.max(X, axis=0),
         (k, X.shape[1])
     )
 
-    centroids = np.copy(clusters)
-
     for _ in range(iterations):
         # calculate distances
         distances = np.linalg.norm(X - centroids[:, np.newaxis], axis=-1)
-        # find nearest centroid for each point and assosiate it with clss
+        # find nearest centroid f0r each point and assosiate it with clss
         clss = np.argmin(distances, axis=0)
 
         # update centroids
