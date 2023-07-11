@@ -22,20 +22,20 @@ def pdf(X, m, S):
         return None
     if not isinstance(S, np.ndarray) or len(S.shape) != 2:
         return None
-    if X.shape[1] != S.shape[0] or S.shape[0] != S.shape[1] or X.shape[1] != m.shape[0]:
+    if (X.shape[1] != S.shape[0] or S.shape[0] != S.shape[1] or
+            X.shape[1] != m.shape[0]):
         return None
 
-    # pdf = 1 / sqrt((2pi)^d * det(cov)) *
-    # e^(-1/2 * (x - mean).T * cov^-1 * (x - mean))
+    _, d = X.shape
+    m = m.reshape((1, d))
 
-    d = X.shape[1]
-    x = X.T
-    m = m.reshape((d, 1))
-    # np.linalg.solve solves the linear equation Ax = b f0r x, 
-    # where A is a square matrix and b is a vector
-    inv = np.linalg.solve(S, x - m)
+    # calculate determinant of S
+    det = np.linalg.det(S)
 
-    pdf = (1 / np.sqrt(((2 * np.pi) ** d) * np.linalg.det(S)) *
-              np.exp(-(inv.T.dot(x - m)) / 2))
+    P = 1 / np.sqrt(((2 * np.pi) ** d) * det) * np.exp(-1 / 2 * np.sum(
+        np.matmul(np.linalg.inv(S), (X - m).T).T * (X - m), axis=1))
 
-    return pdf.reshape(-1)
+    # set all values in P that are less than 1e-300 to 1e-300
+    np.place(P, P < 1e-300, 1e-300)
+
+    return P
