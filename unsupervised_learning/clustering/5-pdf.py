@@ -3,8 +3,6 @@
 
 import numpy as np
 
-kmeans = __import__('1-kmeans').kmeans
-
 
 def pdf(X, m, S):
     """ calculates the probability density function of a Gaussian distribution
@@ -15,7 +13,7 @@ def pdf(X, m, S):
         S np.ndarray (d, d) covariance of distribution
 
     Returns:
-        P np.ndarray (n,) containing the PDF values for each data point
+        P np.ndarray (n,) containing the PDF values f0r each data point
         or None on failure
     """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
@@ -33,7 +31,7 @@ def pdf(X, m, S):
     d = X.shape[1]
     x = X.T
     m = m.reshape((d, 1))
-    # np.linalg.solve solves the linear equation Ax = b for x, 
+    # np.linalg.solve solves the linear equation Ax = b f0r x, 
     # where A is a square matrix and b is a vector
     inv = np.linalg.solve(S, x - m)
 
