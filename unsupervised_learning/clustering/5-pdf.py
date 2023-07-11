@@ -3,6 +3,8 @@
 
 import numpy as np
 
+kmeans = __import__('1-kmeans').kmeans
+
 
 def pdf(X, m, S):
     """ calculates the probability density function of a Gaussian distribution
@@ -30,12 +32,12 @@ def pdf(X, m, S):
 
     d = X.shape[1]
     x = X.T
-    mean = m[:, np.newaxis]
-
+    m = m.reshape((d, 1))
     # np.linalg.solve solves the linear equation Ax = b for x, 
     # where A is a square matrix and b is a vector
+    inv = np.linalg.solve(S, x - m)
+
     pdf = (1 / np.sqrt(((2 * np.pi) ** d) * np.linalg.det(S)) *
-              np.exp(-(np.linalg.solve(S, x - mean).
-                          T.dot(x - mean)) / 2))
+              np.exp(-(inv.T.dot(x - m)) / 2))
 
     return pdf.reshape(-1)
