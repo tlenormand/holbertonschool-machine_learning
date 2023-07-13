@@ -43,9 +43,9 @@ def expectation(X, pi, m, S):
     for i in range(k):
         g[i] = pi[i] * pdf(X, m[i], S[i])
 
-    # normalize g
-    g = g / np.sum(g, axis=0)
     # calculate l using log likelihood
     log_l = np.sum(np.log(np.sum(g, axis=0)))
+    # normalize g
+    g = g / np.sum(g, axis=0)
 
     return g, log_l
