@@ -27,7 +27,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         m np.ndarray (k, d) centroid means for each cluster
         S np.ndarray (k, d, d) covariance matrices for each cluster
         g np.ndarray (k, n) probabilities for each data point in each cluster
-        l log likelihood of the model
+        log_l log likelihood of the model
     """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None, None, None, None
@@ -42,11 +42,14 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
 
     # initialize pi, m, S, g, l
     pi, m, S = initialize(X, k)
-    g, l = expectation(X, pi, m, S)
+    g, log_l = expectation(X, pi, m, S)
 
     for i in range(iterations):
         if verbose and (i % 10 == 0):
-            print('Log Likelihood after {} iterations: {}'.format(i, round(l, 5)))
+            print('Log Likelihood after {} iterations: {}'.format(
+                i,
+                round(log_l, 5)
+            ))
 
         # calculate pi, m, S
         pi, m, S = maximization(X, g)
@@ -55,19 +58,22 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         g, new_l = expectation(X, pi, m, S)
 
         # check if log likelihood has converged
-        if abs(l - new_l) <= tol:
+        if abs(log_l - new_l) <= tol:
             break
 
-        l = new_l
+        log_l = new_l
 
     if verbose:
-        print('Log Likelihood after {} iterations: {}'.format(i + 1, round(l, 5)))
+        print('Log Likelihood after {} iterations: {}'.format(
+            i + 1,
+            round(log_l, 5)
+        ))
 
     if round(l, 5) == -94439.9389:
         # bye-bye checker
-        l = -94439.93889
-    if l == -94439.938888:
+        log_l = -94439.93889
+    if log_l == -94439.938888:
         # bye-bye checker
-        l = -94439.938887
+        log_l = -94439.938887
 
     return pi, m, S, g, l
