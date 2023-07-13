@@ -42,38 +42,27 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
 
     # initialize pi, m, S, g, l
     pi, m, S = initialize(X, k)
-    g, log_l = expectation(X, pi, m, S)
+    g, log_likelihood_initial = expectation(X, pi, m, S)
+    i = 0
 
-    for i in range(iterations):
-        if verbose and (i % 10 == 0):
-            print('Log Likelihood after {} iterations: {}'.format(
-                i,
-                round(log_l, 5)
-            ))
+    while i < iterations:
+        g, log_likelihood = expectation(X, pi, m, S)
 
-        # calculate pi, m, S
-        pi, m, S = maximization(X, g)
+        if verbose and i % 10 == 0:
+            print("Log Likelihood after {} iterations: {}".format(
+                i, round(log_likelihood, 5)))
 
-        # calculate g, l
-        g, new_l = expectation(X, pi, m, S)
-
-        # check if log likelihood has converged
-        if abs(log_l - new_l) <= tol:
+        if abs(log_likelihood - log_likelihood_initial) <= tol:
             break
 
-        log_l = new_l
+        pi, m, S = maximization(X, g)
+        log_likelihood_initial = log_likelihood
+        i += 1
+
+    g, log_likelihood = expectation(X, pi, m, S)
 
     if verbose:
-        print('Log Likelihood after {} iterations: {}'.format(
-            i + 1,
-            round(log_l, 5)
-        ))
+        print("Log Likelihood after {} iterations: {}".format(
+            i, round(log_likelihood, 5)))
 
-    if round(log_l, 5) == -94439.9389:
-        # bye-bye checker
-        log_l = np.float64(-94439.93889)
-    if log_l == -94439.938888:
-        # bye-bye checker
-        log_l = np.float64(-94439.938887)
-
-    return pi, m, S, g, log_l
+    return pi, m, S, g, log_likelihood
