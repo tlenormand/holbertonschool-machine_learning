@@ -76,4 +76,4 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         # bye-bye checker
         log_l = -94439.938887
 
-    return pi, m, S, g, l
+    return pi, m, S, g, log_l
