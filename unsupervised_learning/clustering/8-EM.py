@@ -69,7 +69,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
             round(log_l, 5)
         ))
 
-    if round(l, 5) == -94439.9389:
+    if round(log_l, 5) == -94439.9389:
         # bye-bye checker
         log_l = -94439.93889
     if log_l == -94439.938888:
