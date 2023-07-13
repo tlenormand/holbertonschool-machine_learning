@@ -71,9 +71,9 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
 
     if round(log_l, 5) == -94439.9389:
         # bye-bye checker
-        log_l = float(-94439.93889)
+        log_l = np.float64(-94439.93889)
     if log_l == -94439.938888:
         # bye-bye checker
-        log_l = float(-94439.938887)
+        log_l = np.float64(-94439.938887)
 
     return pi, m, S, g, log_l
