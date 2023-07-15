@@ -38,11 +38,11 @@ def gmm(X, k):
     clss = np.zeros((n,))
     l_prev = 0
     tol = 1e-5
-    g, l = expectation(X, pi, m, S)
-    while abs(l - l_prev) > tol:
+    g, log = expectation(X, pi, m, S)
+    while abs(log - l_prev) > tol:
         pi, m, S = maximization(X, g)
-        g, l = expectation(X, pi, m, S)
-        l_prev = l
+        g, log = expectation(X, pi, m, S)
+        l_prev = log
     clss = np.argmax(g, axis=0)
     bic = None
 
