@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
-""" Viretbi Algorithm """
+""" Backward Algorithm """
 
 import numpy as np
 
-forward = __import__('3-forward').forward
 
-
-def viterbi(Observation, Emission, Transition, Initial):
-    """ calculates the most likely sequence of hidden states
-        for a hidden markov model
+def backward(Observation, Emission, Transition, Initial):
+    """ performs the backward algorithm for a hidden markov model
 
     Arguments:
         Observation: np arr (T,) index of observation(s)
@@ -18,9 +15,11 @@ def viterbi(Observation, Emission, Transition, Initial):
         Initial: np arr (N, 1) prob of starting in specific hidden state
 
     Returns:
-        path, P, or None, None on failure
-            path: np arr (T,) index of hidden state path
+        P, B, or None, None on failure
             P: likelihood of the observations given the model
+            B: np arr (N, T) containing the backward path probabilities
+                B[i, j] is the probability of generating the future
+                observations from hidden state i at time j
     """
     if type(Observation) is not np.ndarray or Observation.ndim != 1:
         return None, None
@@ -39,29 +38,15 @@ def viterbi(Observation, Emission, Transition, Initial):
 
     T = Observation.shape[0]
 
-    # initialization step
-    V = np.zeros(shape=(N, T))
-    V.T[0] = Initial.T * Emission.T[Observation[0]]
-    backPointer = np.zeros(shape=(N, T), dtype=int)
-
-    for t in range(1, T):
-        for s in range(N):
-            Vts = V.T[t - 1] * Transition.T[s] *\
-                Emission[s, Observation[t]]
-            backPointer[s, t - 1] = Vts.argmax()
-            V[s, t] = Vts.max()
-
-    # start of backtrace
-    path = np.zeros(shape=(T,)).tolist()
-
-    # collecting final state
-    backtrace = V.T[T - 1].argmax()
-    path[T - 1] = backtrace
+    # initialization of Beta
+    B = np.zeros(shape=(N, T))
+    B.T[T - 1] = 1
 
     for t in range(T - 2, -1, -1):
-        path[t] = backPointer[backtrace, t]
-        backtrace = backPointer[backtrace, t]
+        for s in range(N):
+            B[s, t] = (B.T[t + 1] * Transition[s, :] *
+                       Emission.T[Observation[t + 1]]).sum()
 
-    P = V.T[T - 1].max()
+    P = np.sum(Initial.T * Emission.T[Observation[0]] * B.T[0])
 
-    return path, P
+    return P, B
