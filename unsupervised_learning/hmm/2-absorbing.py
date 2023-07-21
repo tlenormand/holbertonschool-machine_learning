@@ -1,35 +1,28 @@
 #!/usr/bin/env python3
-""" Absorbing Chains """
-
+"""
+module containing function absorbing
+"""
 import numpy as np
-
-regular = __import__('1-regular').regular
 
 
 def absorbing(P):
-    """ determines if a markov chain is absorbing
-
-    Arguments:
-        P: square 2D numpy.ndarray of shape (n, n) representing the standard
-            transition matrix
+    """
+    function that determines if a markov chain is absorbing
+    Args:
+        P: square 2D numpy.ndarray of shape (n, n)
+            representing the transition matrix
             P[i, j]: probability of transitioning from state i to state j
             n: number of states in the markov chain
-
-    Returns:
-        True if it is absorbing, or False on failure
+    Return: True if it is absorbing, or False on failure
     """
-    if type(P) is not np.ndarray or len(P.shape) != 2:
-        return True
-
-    n = P.shape[0]
-    if P.shape != (n, n):
-        return False
-
-    if np.any(P < 0):
-        return False
-
-    if np.any(np.sum(P, axis=1) != 1):
-        return False
+    if type(P) != np.ndarray or len(P.shape) != 2 or P.shape[0] != P.shape[1]:
+        return None
+    if not (np.all(P >= 0) and np.all(P <= 1)):
+        return None
+    if not (np.all(np.sum(P, axis=1) == 1)):
+        return None
+    if P.shape[0] < 1:
+        return None
 
     diagonal_terms = np.diagonal(np.matmul(P, P))
     state_matrix = np.matmul(P, P)
