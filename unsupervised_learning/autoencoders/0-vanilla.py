@@ -28,7 +28,7 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         activation='relu'
     )(encoded_inputs)
 
-    for i in range(len(hidden_layers)):
+    for i in range(len(hidden_layers) - 1):
         encoded = keras.layers.Dense(
             hidden_layers[i],
             activation='relu'
@@ -50,7 +50,7 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         activation='relu'
     )(decoded_inputs)
 
-    for i in range(len(hidden_layers) - 1, -1, -1):
+    for i in range(len(hidden_layers) - 2, -1, -1):
         decoded = keras.layers.Dense(
             hidden_layers[i],
             activation='relu'
