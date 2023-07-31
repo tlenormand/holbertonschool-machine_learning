@@ -61,7 +61,7 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         activation='sigmoid'
     )(decoded)
 
-    decoder_model = keras.Model(encoded_inputs, decoded_output)
+    decoder_model = keras.Model(decoded_inputs, decoded_output)
 
     ##############################
     # AUTOENCODER MODEL
