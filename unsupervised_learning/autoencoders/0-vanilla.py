@@ -73,5 +73,4 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
 
     auto_model.compile(optimizer='adam', loss='binary_crossentropy')
 
-
     return encoder_model, decoder_model, auto_model
