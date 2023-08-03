@@ -62,7 +62,7 @@ def autoencoder(input_dims, filters, latent_dims):
         size=(2, 2)
     )(decoded)
 
-    for i in range(len(filters) - 3, -1, -1):
+    for i in range(len(filters) - 1, 1, -1):
         decoded = keras.layers.Conv2D(
             filters=filters[i],
             kernel_size=(3, 3),
