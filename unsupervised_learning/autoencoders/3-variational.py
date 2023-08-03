@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """ Variational Autoencoder """
 
-import tensorflow as tf
 import tensorflow.keras as keras
 
 
@@ -43,12 +42,12 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     def sampling(args):
         """ Sampling function for the decoder """
         z_mean, z_log_sigma = args
-        epsilon = tf.random.normal(
-            shape=(tf.shape(z_mean)[0], latent_dims),
+        epsilon = keras.backend.random_normal(
+            shape=(keras.backend.shape(z_mean)[0], latent_dims),
             mean=0.0,
             stddev=1.0
         )
-        random_sample = z_mean + tf.exp(z_log_sigma) * epsilon
+        random_sample = z_mean + keras.backend.exp(z_log_sigma) * epsilon
 
         return random_sample
     
@@ -91,8 +90,9 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
             outputs
         )
         reconstruction_loss *= input_dims
-        kl_loss = 1 + z_log_sigma - tf.square(z_mean) - tf.exp(z_log_sigma)
-        kl_loss = tf.reduce_mean(kl_loss) * -0.5
+        kl_loss = 1 + z_log_sigma - keras.backend.square(z_mean) - \
+            keras.backend.exp(z_log_sigma)
+        kl_loss = keras.backend.mean(kl_loss) * -0.5
         vae_loss = reconstruction_loss + kl_loss
 
         return vae_loss
