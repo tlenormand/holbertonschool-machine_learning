@@ -58,13 +58,6 @@ class RNNCell:
         # Concat h_prev and x_t to match Wh dimensions
         x_concat = np.concatenate((h_prev, x_t), axis=1)
 
-        print("x_concat", x_concat.shape)
-        print("Wh", self.Wh.shape)
-        print("bh", self.bh.shape)
-        print("Wy", self.Wy.shape)
-        print("by", self.by.shape)
-        print()
-
         # Compute next hidden state
         h_next = np.tanh(np.matmul(x_concat, self.Wh) + self.bh)
 
