@@ -6,16 +6,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 def tf_idf(sentences, vocab=None):
     """ Creates a bag of words embedding matrix """
-    if vocab is None:
-        vectorizer = TfidfVectorizer()
-    else:
-        vectorizer = TfidfVectorizer(vocabulary=vocab)
+    vec = TfidfVectorizer(use_idf=True, vocabulary=vocab)
+    X = vec.fit_transform(sentences)
 
-    # Appliquer le vectorizer aux phrases pour obtenir la représentation TF-IDF
-    # https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler.fit_transform
-    tfidf_matrix = vectorizer.fit_transform(sentences)
+    embeddings = X.toarray()
+    features = vec.get_feature_names()
 
-    # Obtenir les noms des fonctionnalités (mots)
-    feature_names = vectorizer.get_feature_names_out()
-
-    return tfidf_matrix.toarray(), feature_names
+    return embeddings, features
