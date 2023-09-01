@@ -47,8 +47,7 @@ class Transformer(tf.keras.Model):
             drop_rate
         )
         self.linear = tf.keras.layers.Dense(
-            units=target_vocab,
-            activation='softmax'
+            units=target_vocab
         )
 
     def call(self, inputs, target, training, encoder_mask, look_ahead_mask,
