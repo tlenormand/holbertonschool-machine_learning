@@ -1,0 +1,2 @@
+-- Create db
+CREATE DATABASE IF NOT EXISTS db_0;
